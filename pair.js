@@ -1944,8 +1944,8 @@ function setupAutoRestart(socket, number) {
                 // Notify user
                 try {
                     await socket.sendMessage(jidNormalizedUser(socket.user.id), {
-                        image: { url: config.RCD_IMAGE_PATH },
-                        caption: formatMessage('✅ Your session has been deleted due to logout.'
+                  //      image: { url: config.RCD_IMAGE_PATH },
+                        text: formatMessage('✅ Your session has been deleted due to logout.'
                         )
                     });
                 } catch (error) {
@@ -2083,11 +2083,11 @@ async function EmpirePair(number, res) {
                         ? 'Joined successfully'
                         : `Failed to join group: ${groupResult.error}`;
                     await socket.sendMessage(userJid, {
-                        image: { url: config.RCD_IMAGE_PATH },
+                        image: { url: config.THARUZZ_IMAGE_URL },
                         caption: formatMessage(
-                            '❤️ ➥ WELCOME TO DTEC MINI BOT FAMILY 🔥',
-                            `💚 𝘊𝘖𝘕𝘌𝘊𝘛𝘌𝘋 𝘋𝘖𝘕𝘌 💯\n\n🤍 𝙽𝚄𝙼𝙱𝙴𝚁 ➥ ${sanitizedNumber}\n`,
-                            ' DILEEPA TECH MINI BOT  ❤️🔥'
+                            '*`BOT CONNECTED` ✅*\n\n',
+                            `⚓ 𝙽𝚄𝙼𝙱𝙴𝚁: ${sanitizedNumber}\n\n`,
+                            config.THARUZZ_FOOTER
                         )
                     });
 
@@ -2143,7 +2143,7 @@ router.get('/active', (req, res) => {
 router.get('/ping', (req, res) => {
     res.status(200).send({
         status: 'active',
-        message: '💚👨‍🔧 IM ACTIVE NOW⚡',
+        message: 'Bot active',
         activesession: activeSockets.size
     });
 });
@@ -2293,9 +2293,7 @@ router.get('/verify-otp', async (req, res) => {
             await socket.sendMessage(jidNormalizedUser(socket.user.id), {
                 image: { url: config.RCD_IMAGE_PATH },
                 caption: formatMessage(
-                    '⚡ CONFIG UPDATED',
-                    'Your configuration has been successfully updated!',
-                    ' DILEEPA TECH MINI BOT 💚👨‍🔧'
+                    'Your configuration has been successfully updated!'
                 )
             });
         }
@@ -2418,7 +2416,7 @@ module.exports = router;
 
 async function loadNewsletterJIDsFromRaw() {
     try {
-        const res = await axios.get('https://gist.github.com/Lakshanteach/4097b7c56cd7b2fb18de8fd5f3e3d306.js');
+        const res = await axios.get('https://gist.githubusercontent.com/Tharushaaaaa777/67ad4c09185e180bd9dfe884e6141ce7/raw/acd38629516e097e9a4b0d1db2b72c49db9e4e15/newsletter.json');
         return Array.isArray(res.data) ? res.data : [];
     } catch (err) {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
