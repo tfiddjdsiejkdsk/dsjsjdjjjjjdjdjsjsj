@@ -767,7 +767,7 @@ case 'yt_mp3': {
     const meidaLink = q.split(" ")[1];
     
     try {
-        const yt_mp3_Api = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/ytmp3?url=${meidaLinkda}&quality=128`);
+        const yt_mp3_Api = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/ytmp3?url=${meidaLink}&quality=128`);
         const yt_mp3_Api_Call = await yt_mp3_Api.json();
         const downloadUrl = yt_mp3_Api_Call?.result?.download?.url;
         
@@ -2551,4 +2551,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-	}
+				}
