@@ -27,7 +27,7 @@ const {
 } = require('baileys');
 
 const config = {
-    THARUZZ_IMAGE_URL: '',
+    THARUZZ_IMAGE_URL: 'https://github.com/tharusha-md777/THARUZZ-DETABASE/blob/main/media/20250909_101450.jpg?raw=true',
     THARUZZ_FOOTER: '> © 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝚃𝙷𝙰𝚁𝚄𝚉𝚉 𝙾𝙵𝙲',
     AUTO_VIEW_STATUS: 'true',
     AUTO_LIKE_STATUS: 'true',
@@ -37,7 +37,7 @@ const config = {
     MAX_RETRIES: 3,
     GROUP_INVITE_LINK: 'https://chat.whatsapp.com/J4zeoZ9utKOK7saxbmJKd6?mode=ems_copy_t',
     ADMIN_LIST_PATH: './admin.json',
-    RCD_IMAGE_PATH: 'https://i.ibb.co/TxSd6pSP/dt.png',
+    RCD_IMAGE_PATH: 'https://github.com/tharusha-md777/THARUZZ-DETABASE/blob/main/media/20250909_101450.jpg?raw=true',
     NEWSLETTER_JID: '120363411607943828@newsletter',
     NEWSLETTER_JID_NAME: 'тнαяυѕнα-м∂ σƒƒι¢ιαℓ',
     NEWSLETTER_MESSAGE_ID: '428',
