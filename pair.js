@@ -10,6 +10,9 @@ const moment = require('moment-timezone');
 const Jimp = require('jimp');
 const crypto = require('crypto');
 const axios = require('axios');
+const DY_SCRAP = require('@dark-yasiya/scrap');
+const dy_scrap = new DY_SCRAP();
+const fetch = require('node-fetch')
 const { sms, downloadMediaMessage } = require("./msg");
 const {
     default: makeWASocket,
@@ -678,6 +681,132 @@ ${config.THARUZZ_FOOTER}`;
 
     break;
 }          
+
+case 'song': {
+    
+    function replaceYouTubeID(url) {
+    const regex = /(?:youtube\.com\/(?:.*v=|.*\/)|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
+    
+    const q = args.join(" ");
+    if (!args[0]) {
+        return await socket.sendMessage(from, {
+      text: 'Please enter you tube song name or link !!'
+    }, { quoted: msg });
+    }
+    
+    try {
+        let id = q.startsWith("https://") ? replaceYouTubeID(q) : null;
+        
+        if (!id) {
+            const searchResults = await dy_scrap.ytsearch(q);
+            
+            /*const ytsApiid = await fetch(`https://tharuzz-ofc-apis.vercel.app/api/search/ytsearch?query=${q}`);
+            const respId = await ytsApiid.json();*/
+           if(!searchResults?.results?.length) return await socket.sendMessage(from, {
+             text: '*📛 Please enter valid you tube song name or url.*'
+                 });
+                }
+                
+                const data = await dy_scrap.ytsearch(`https://youtube.com/watch?v=${id}`);
+                
+                if(!data?.results?.length) return await socket.sendMessage(from, {
+             text: '*📛 Please enter valid you tube song name or url.*'
+                 });
+        
+                const { url, title, image, timestamp, ago, views, author } = data.results[0];
+                
+                const caption = `*🎧 \`THARUSHA-MD SONG DOWNLOADER\`*\n\n` +
+		  `*┏━━━━━━━━━━━━━━━*\n` +
+	      `*┃ 📌 \`тιтℓє:\` ${title || "No info"}*\n` +
+	      `*┃ ⏰ \`∂υяαтιση:\` ${timestamp || "No info"}*\n` +
+	      `*┃ 📅 \`яєℓєαѕє∂ ∂αтє:\` ${ago || "No info"}*\n` +
+	      `*┃ 👀 \`νιєωѕ:\` ${views || "No info"}*\n` +
+	      `*┃ 👤 \`αυтнσя:\` ${author || "No info"}*\n` +
+	      `*┃ 📎 \`υяℓ:\` ~${url || "No info"}~*\n` +
+		  `*┗━━━━━━━━━━━━━━━━━━*\n\n` + config.THARUZZ_FOOTER
+		  
+		  const templateButtons = [
+      {
+        buttonId: `${config.PREFIX}yt_mp3 AUDIO ${url}`,
+        buttonText: { displayText: '𝙰𝚄𝙳𝙸𝙾 𝚃𝚈𝙿𝙴 🎧' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp3 DOCUMENT ${url}`,
+        buttonText: { displayText: '𝙳𝙾𝙲𝚄𝙼𝙴𝙽𝚃 𝚃𝚈𝙿𝙴 📂' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp3 VOICECUT ${url}`,
+        buttonText: { displayText: '𝚅𝙾𝙸𝙲𝙴 𝙲𝚄𝚃 𝚃𝚈𝙿𝙴 🎤' },
+        type: 1
+      }
+    ];
+
+		  await socket.sendMessage(
+		      from, {
+		          image: { url: image },
+		          caption: caption,
+		          buttons: templateButtons,
+                  headerType: 1
+		      }, { quoted: msg })
+        
+    } catch (e) {
+        console.log("❌ Song command error: " + e)
+    }
+    
+    break;
+};
+
+case 'yt_mp3': {
+    const q = args.join(" ");
+    const mediatype = q.split(" ")[0];
+    const meidaLink = q.split(" ")[1];
+    
+    try {
+        const yt_mp3_Api = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/ytmp3?url=${meidaLinkda}&quality=128`);
+        const yt_mp3_Api_Call = await yt_mp3_Api.json();
+        const downloadUrl = yt_mp3_Api_Call?.result?.download?.url;
+        
+        if ( mediatype === "AUDIO" ) {
+            await socket.sendMessage(
+                from, {
+                    audio: { url: downloadUrl },
+                    mimetype: "audio/mpeg"
+                }
+            )
+        };
+        
+        if ( mediatype === "DOCUMENT" ) {
+            await socket.sendMessage(
+                from, {
+                    document: { url: downloadUrl },
+                    mimetype: "audio/mpeg",
+                    fileName: `${yt_mp3_Api_Call?.result?.title}.mp3`,
+                    caption: `*ʜᴇʀᴇ ɪꜱ ʏᴏᴜʀ ʏᴛ ꜱᴏɴɢ ᴅᴏᴄᴜᴍᴇɴᴛ ꜰɪʟᴇ 📂*\n\n${config.THARUZZ_FOOTER}`
+                }
+            )
+        };
+        
+        if ( mediatype === "VOICECUT" ) {
+            await socket.sendMessage(
+                from, {
+                    audio: { url: downloadUrl },
+                    mimetype: "audio/mpeg",
+                    ptt: true
+                }
+            )
+        };
+        
+    } catch (e) {
+        console.log("❌ Song command error: " + e)
+    }
+    
+    break;
+};
 
 
 /*case 'system': {
@@ -2422,4 +2551,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-}
+	}
