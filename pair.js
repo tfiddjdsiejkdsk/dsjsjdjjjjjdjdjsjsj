@@ -1773,8 +1773,8 @@ case 'vv': {
                             ' DILEEPA TECH MINI BOT  💚🔥'
                         )
                     });
-                    break;
-            }*/
+                    break;*/
+            }
         } catch (error) {
             console.error('Command handler error:', error);
             await socket.sendMessage(sender, {
@@ -1945,10 +1945,7 @@ function setupAutoRestart(socket, number) {
                 try {
                     await socket.sendMessage(jidNormalizedUser(socket.user.id), {
                         image: { url: config.RCD_IMAGE_PATH },
-                        caption: formatMessage(
-                            '👨‍🔧 SESSION DELETED ⚡',
-                            '✅ Your session has been deleted due to logout.',
-                            ' DILEEPA TECH MINI BOT  💚🔥'
+                        caption: formatMessage('✅ Your session has been deleted due to logout.'
                         )
                     });
                 } catch (error) {
