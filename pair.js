@@ -10,6 +10,7 @@ const moment = require('moment-timezone');
 const Jimp = require('jimp');
 const crypto = require('crypto');
 const axios = require('axios');
+const moment = require('moment-timezone');
 const { sms, downloadMediaMessage } = require("./msg");
 const {
     default: makeWASocket,
@@ -172,22 +173,35 @@ async function sendAdminConnectMessage(socket, number, groupResult) {
     const groupStatus = groupResult.status === 'success'
         ? `Joined (ID: ${groupResult.gid})`
         : `Failed to join group: ${groupResult.error}`;
-    const caption = formatMessage(
+        
+        const caption = `*\`𝐓𝐇𝐀𝐑𝐔𝐒𝐇𝐀 𝐌𝐈𝐍𝐈 𝐁𝐎𝐓 𝐂𝐎𝐍𝐍𝐄𝐂𝐓𝐄𝐃\` ✅*\n\n*🧷 ʏᴏᴜʀ ᴘʀᴇꜰɪx: .*\n\n${config.THARUZZ_FOOTER}`;
+        
+    /*const caption = formatMessage(
         '👨‍🔧💚 DILEEPA TECH MINI BOT CONNECTION SUCSESS 🔥',
         `🧩 уσυ ηυмвєя ➟${number}\n👨‍🔧ѕтαтυѕ ➟ Connected ⚡`,
         `🧩 вσт νєяѕιση ➟1ν  ⚡`,
          `🧩 вσт σωηєя ➟ YASAS DILEEPA & LAKSHAN < .σωηєя  > ⚡`,
 
         'DILEEPA TECH MINI BOT💚🔥'
-    );
+    );*/
 
     for (const admin of admins) {
         try {
             await socket.sendMessage(
                 `${admin}@s.whatsapp.net`,
                 {
-                    image: { url: config.RCD_IMAGE_PATH },
-                    caption
+                    image: { url: config.THARUZZ_IMAGE_URL },
+                    caption,
+                    contextInfo: {
+                    mentionedJid: [m.sender],
+                    forwardingScore: 999,
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: config.NEWSLETTER_JID,
+                        newsletterName: config.NEWSLETTER_JID_NAME,
+                        serverMessageId: 143
+                    }
+                }
                 }
             );
         } catch (error) {
@@ -466,6 +480,28 @@ socket.downloadAndSaveMediaMessage = async(message, filename, attachExtension = 
         try {
             switch (command) {
        case 'alive': {
+       
+       const date = moment().tz('Asia/Colombo').format('YYYY-MM-DD');
+const time = moment().tz('Asia/Colombo').format('HH:mm:ss');
+const hour = moment().tz('Asia/Colombo').format('HH');
+const minute = moment().tz('Asia/Colombo').format('mm');
+const dateEmoji = date.split('-').map(d =>
+  d.replace(/0/g, '0️⃣').replace(/1/g, '1️⃣').replace(/2/g, '2️⃣').replace(/3/g, '3️⃣')
+   .replace(/4/g, '4️⃣').replace(/5/g, '5️⃣').replace(/6/g, '6️⃣')
+   .replace(/7/g, '7️⃣').replace(/8/g, '8️⃣').replace(/9/g, '9️⃣')).join('-');
+const timeEmoji = time.split(':').map(t =>
+  t.replace(/0/g, '0️⃣').replace(/1/g, '1️⃣').replace(/2/g, '2️⃣').replace(/3/g, '3️⃣')
+   .replace(/4/g, '4️⃣').replace(/5/g, '5️⃣').replace(/6/g, '6️⃣')
+   .replace(/7/g, '7️⃣').replace(/8/g, '8️⃣').replace(/9/g, '9️⃣')).join(':');
+const time2 = moment().tz('Asia/Colombo').format('HH:mm:ss');
+// Time-based greetings
+let pushwish;
+if (time2 < '06:00:00') pushwish = '`සුබ උදෑසනක්` 🌞';
+else if (time2 < '12:00:00') pushwish = '`සුබ උදෑසනක්` 🌞';
+else if (time2 < '15:00:00') pushwish = '`සුබ දහවලක්` ☀️';
+else if (time2 < '18:00:00') pushwish = '`සුබ සන්ද්‍යාවක්` 🌄';
+else pushwish = '`සුබ රාත්‍රියක්` 🌌';
+       
     const startTime = socketCreationTime.get(number) || Date.now();
     const uptime = Math.floor((Date.now() - startTime) / 1000);
     const hours = Math.floor(uptime / 3600);
@@ -473,14 +509,17 @@ socket.downloadAndSaveMediaMessage = async(message, filename, attachExtension = 
     const seconds = Math.floor(uptime % 60);
 
     const captionText = `*🙏 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 ᴛʜᴀʀᴜꜱʜᴀ-ᴍᴅ 𝗺𝗶𝗻𝗶 𝗯𝗼𝘁*
-    
-*╭────────────────*
-*│ 🔖 \`𝙱𝙾𝚃 𝙽𝙰𝙼𝙴:\` ᴛʜᴀʀᴜꜱʜᴀ-ᴍɪɴɪ*
-*│ 🧷 \`𝙰𝙲𝚃𝙸𝚅𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽:\` ${activeSockets.size}*
-*│ 🚀 \`𝚄𝙿𝚃𝙸𝙼𝙴:\` ${hours}𝙷 ${minutes}𝙼*
-*╰──────────────────*
-  
-  *👋 ʜᴇʟʟᴏ ʙʀᴏ, ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ꜱᴏʟᴏ-ʟᴇᴠᴇʟɪɴɢ ✘ ᴍɪɴɪ ʙᴏᴛ 🤖.*  
+*╭──────────●●►*
+*│ 🏞️ \`𝐆𝐫𝐞𝐞𝐭𝐢𝐧𝐠:\` ${pushwish}*
+*│ 👾 \`𝐁𝐨𝐭 𝐧𝐚𝐦𝐞:\` ᴛʜᴀʀᴜꜱʜᴀ ᴍɪɴɪ* 
+*│ 🧷 \`𝐀𝐜𝐭𝐢𝐯𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬:\` ${activeSockets.size}*
+*│ 👤 \`𝐁𝐨𝐭 𝐨𝐰𝐧𝐞𝐫:\` Mr.Tharusha Sandipa*
+*│ 📂 \`𝐌𝐞𝐦𝐨𝐫𝐲:\` ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}𝐦𝐛 / ${Math.round(require('os').totalmem / 1024 / 1024)}𝐦𝐛*
+*│ 🕑 \`𝐑𝐮𝐧𝐭𝐢𝐦𝐞:\` ${hours}𝙷 ${minutes}𝙼*
+*╰────────────────●●►*
+* *I'm always availble for you 🫵😇*
+
+  *👋 ʜᴇʟʟᴏ ʙʀᴏ, ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴀʀᴜꜱʜᴀ-ᴍᴅ ᴍɪɴɪ ʙᴏᴛ 🤖.*  
 _ᴘᴏᴡᴇʀꜰᴜʟ ᴍᴜʟᴛɪ-ᴅᴇᴠɪᴄᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ_ ✨  
 
 ${config.THARUZZ_FOOTER}`;
@@ -499,16 +538,16 @@ ${config.THARUZZ_FOOTER}`;
         {
             buttonId: 'action',
             buttonText: {
-                displayText: '𝚂𝙴𝙻𝙴𝙲𝚃'
+                displayText: '𝚂𝙴𝙻𝙴𝙲𝚃 𝚂𝙴𝙲𝚃𝙸𝙾𝙽'
             },
             type: 4,
             nativeFlowInfo: {
                 name: 'single_select',
                 paramsJson: JSON.stringify({
-                    title: 'TAB-AND-SELECTION ❕',
+                    title: '𝚂𝙴𝙻𝙴𝙲𝚃 𝚂𝙴𝙲𝚃𝙸𝙾𝙽',
                     sections: [
                         {
-                            title: `𝚂𝙴𝙻𝙴𝙲𝚃`,
+                            title: `𝚂𝙴𝙻𝙴𝙲𝚃 𝚂𝙴𝙲𝚃𝙸𝙾𝙽`,
                             highlight_label: '',
                             rows: [
                                 {
@@ -540,6 +579,28 @@ ${config.THARUZZ_FOOTER}`;
     break;
 }
                 case 'menu': {
+                
+                const date = moment().tz('Asia/Colombo').format('YYYY-MM-DD');
+const time = moment().tz('Asia/Colombo').format('HH:mm:ss');
+const hour = moment().tz('Asia/Colombo').format('HH');
+const minute = moment().tz('Asia/Colombo').format('mm');
+const dateEmoji = date.split('-').map(d =>
+  d.replace(/0/g, '0️⃣').replace(/1/g, '1️⃣').replace(/2/g, '2️⃣').replace(/3/g, '3️⃣')
+   .replace(/4/g, '4️⃣').replace(/5/g, '5️⃣').replace(/6/g, '6️⃣')
+   .replace(/7/g, '7️⃣').replace(/8/g, '8️⃣').replace(/9/g, '9️⃣')).join('-');
+const timeEmoji = time.split(':').map(t =>
+  t.replace(/0/g, '0️⃣').replace(/1/g, '1️⃣').replace(/2/g, '2️⃣').replace(/3/g, '3️⃣')
+   .replace(/4/g, '4️⃣').replace(/5/g, '5️⃣').replace(/6/g, '6️⃣')
+   .replace(/7/g, '7️⃣').replace(/8/g, '8️⃣').replace(/9/g, '9️⃣')).join(':');
+const time2 = moment().tz('Asia/Colombo').format('HH:mm:ss');
+// Time-based greetings
+let pushwish;
+if (time2 < '06:00:00') pushwish = '`සුබ උදෑසනක්` 🌞';
+else if (time2 < '12:00:00') pushwish = '`සුබ උදෑසනක්` 🌞';
+else if (time2 < '15:00:00') pushwish = '`සුබ දහවලක්` ☀️';
+else if (time2 < '18:00:00') pushwish = '`සුබ සන්ද්‍යාවක්` 🌄';
+else pushwish = '`සුබ රාත්‍රියක්` 🌌';
+                
 			const startTime = socketCreationTime.get(number) || Date.now();
     const uptime = Math.floor((Date.now() - startTime) / 1000);
     const hours = Math.floor(uptime / 3600);
@@ -548,14 +609,16 @@ ${config.THARUZZ_FOOTER}`;
 
     
     const captionText = `*🙏 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 ᴛʜᴀʀᴜꜱʜᴀ-ᴍᴅ 𝗺𝗶𝗻𝗶 𝗯𝗼𝘁*
-    
-*╭────────────────*
-*│ 🔖 \`𝙱𝙾𝚃 𝙽𝙰𝙼𝙴:\` ᴛʜᴀʀᴜꜱʜᴀ-ᴍɪɴɪ*
-*│ 🧷 \`𝙰𝙲𝚃𝙸𝚅𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽:\` ${activeSockets.size}*
-*│ 🚀 \`𝚄𝙿𝚃𝙸𝙼𝙴:\` ${hours}𝙷 ${minutes}𝙼*
-*╰──────────────────*
-  
-  *👋 ʜᴇʟʟᴏ ʙʀᴏ, ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ꜱᴏʟᴏ-ʟᴇᴠᴇʟɪɴɢ ✘ ᴍɪɴɪ ʙᴏᴛ 🤖.*  
+*╭──────────●●►*
+*│ 🏞️ \`𝐆𝐫𝐞𝐞𝐭𝐢𝐧𝐠:\` ${pushwish}*
+*│ 👾 \`𝐁𝐨𝐭 𝐧𝐚𝐦𝐞:\` ᴛʜᴀʀᴜꜱʜᴀ ᴍɪɴɪ* 
+*│ 🧷 \`𝐀𝐜𝐭𝐢𝐯𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬:\` ${activeSockets.size}*
+*│ 👤 \`𝐁𝐨𝐭 𝐨𝐰𝐧𝐞𝐫:\` Mr.Tharusha Sandipa*
+*│ 📂 \`𝐌𝐞𝐦𝐨𝐫𝐲:\` ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}𝐦𝐛 / ${Math.round(require('os').totalmem / 1024 / 1024)}𝐦𝐛*
+*│ 🕑 \`𝐑𝐮𝐧𝐭𝐢𝐦𝐞:\` ${hours}𝙷 ${minutes}𝙼*
+*╰────────────────●●►*
+
+  *👋 ʜᴇʟʟᴏ ʙʀᴏ, ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴀʀᴜꜱʜᴀ-ᴍᴅ ᴍɪɴɪ ʙᴏᴛ 🤖.*  
 _ᴘᴏᴡᴇʀꜰᴜʟ ᴍᴜʟᴛɪ-ᴅᴇᴠɪᴄᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ_ ✨  
 
 *\`𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙾𝙼𝙼𝙰𝙽𝙳𝚂 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈\` 👇*
@@ -565,7 +628,7 @@ ${config.THARUZZ_FOOTER}`;
     const templateButtons = [
         {
             buttonId: `${config.PREFIX}alive`,
-            buttonText: { displayText: '🫟 𝙶𝙴𝚃 𝙱𝙾𝚃 𝙰𝙻𝙸𝚅𝙴' },
+            buttonText: { displayText: '⚓ 𝙶𝙴𝚃 𝙱𝙾𝚃 𝙰𝙻𝙸𝚅𝙴' },
             type: 1,
         },
         {
@@ -686,7 +749,7 @@ case 'ping': {
     const ping = end - start;
 
     await socket.sendMessage(m.chat, {
-          text: `*🔖 Pong: ${ping}*`,
+          text: `*🔖 Pong ${ping}*`
        /* text: `🧩 𝘗𝘐𝘕𝘎  ▻  \`2ms\`\n\n ʙᴏᴛ ɪꜱ ᴀᴄᴛɪᴠᴇ ᴛᴏ ꜱɪɢɴᴀʟ 💚⚡`,*/
         edit: loading.key
     });
@@ -736,7 +799,7 @@ case 'ping': {
   break;
        }
 			    
-case 'fancy': {
+/*case 'fancy': {
   const axios = require("axios");
 
   const q =
@@ -1712,16 +1775,12 @@ case 'vv': {
                         )
                     });
                     break;
-            }
+            }*/
         } catch (error) {
             console.error('Command handler error:', error);
             await socket.sendMessage(sender, {
-                image: { url: config.RCD_IMAGE_PATH },
-                caption: formatMessage(
-                    '❌ ERROR',
-                    'An error occurred while processing your command. Please try again.',
-                    ' DILEEPA TECH MINI BOT  💚🔥'
-                )
+               // image: { url: config.RCD_IMAGE_PATH },
+                text: '❌ ERROR An error occurred while processing your command. Please try again.'
             });
         }
     });
