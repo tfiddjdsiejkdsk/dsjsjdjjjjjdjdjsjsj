@@ -1,5 +1,5 @@
 {
-  "name": "CYBER-HUNTER" ,
+  "name": "THARUZZ-MINI" ,
   "version": "1.0.0",
   "description": " WhatsApp Bot with Multi-Number Support",
   "main": "index.js",
@@ -37,8 +37,8 @@
     "bot",
     "multi-device",
     "baileys",
-    "shala-md"
+    "tharuzz-md"
   ],
-  "author": "SHALA",
+  "author": "Tharuzz-ofc",
   "license": "MIT"
 }
