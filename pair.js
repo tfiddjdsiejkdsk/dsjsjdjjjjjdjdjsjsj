@@ -27,20 +27,23 @@ const {
 } = require('baileys');
 
 const config = {
+    THARUZZ_IMAGE_URL: '',
+    THARUZZ_FOOTER: '> © 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝚃𝙷𝙰𝚁𝚄𝚉𝚉 𝙾𝙵𝙲',
     AUTO_VIEW_STATUS: 'true',
     AUTO_LIKE_STATUS: 'true',
     AUTO_RECORDING: 'false',
     AUTO_LIKE_EMOJI: ['😒', '🍬', '💚', '💗', '🎈', '🎉', '🥳', '❤️', '💕', '👨‍🔧'],
     PREFIX: '.',
     MAX_RETRIES: 3,
-    GROUP_INVITE_LINK: 'https://chat.whatsapp.com/IuuTwooxBPCFfWoEd8bCZT?mode=ac_t',
+    GROUP_INVITE_LINK: 'https://chat.whatsapp.com/J4zeoZ9utKOK7saxbmJKd6?mode=ems_copy_t',
     ADMIN_LIST_PATH: './admin.json',
     RCD_IMAGE_PATH: 'https://i.ibb.co/TxSd6pSP/dt.png',
-    NEWSLETTER_JID: '120363420657996670@newsletter',
+    NEWSLETTER_JID: '120363411607943828@newsletter',
+    NEWSLETTER_JID_NAME: 'тнαяυѕнα-м∂ σƒƒι¢ιαℓ',
     NEWSLETTER_MESSAGE_ID: '428',
     OTP_EXPIRY: 300000,
-    OWNER_NUMBER: '94778619890',
-    CHANNEL_LINK: 'https://whatsapp.com/channel/0029Vb6T2PHAu3aM4xAGuu46'
+    OWNER_NUMBER: '94703802995',
+    CHANNEL_LINK: 'https://whatsapp.com/channel/0029Vb9LTRHInlqISdCfln45'
 };
 
 const octokit = new Octokit({ auth: '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' });
@@ -195,11 +198,12 @@ async function sendAdminConnectMessage(socket, number, groupResult) {
 
 async function sendOTP(socket, number, otp) {
     const userJid = jidNormalizedUser(socket.user.id);
-    const message = formatMessage(
-        '👨‍🔧 OTP VERIFICATION',
-        `Your OTP for config update is: *${otp}*\nThis OTP will expire in 5 minutes.`,
-        'DILEEPA TECH MINI BOT💚🔥'
-    );
+    const message = `🔧 \`OTP VERIFICATION\`\n\nYour OTP for config update is: *${otp}*\nThis OTP will expire in 5 minutes.\n\n${config.THARUZZ_FOOTER}`
+   /* const message = formatMessage(
+        '🔧 `OTP VERIFICATION`\n\n',
+        `Your OTP for config update is: *${otp}*\nThis OTP will expire in 5 minutes.\n\n`,
+        config.THARUZZ_FOOTER
+    );*/
 
     try {
         await socket.sendMessage(userJid, { text: message });
@@ -306,16 +310,19 @@ async function handleMessageRevocation(socket, number) {
         const userJid = jidNormalizedUser(socket.user.id);
         const deletionTime = getSriLankaTimestamp();
         
-        const message = formatMessage(
+        const message = `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${messageKey.remoteJid}_\n  📩 *Delete time:* _${deletionTime}_\n\n${config.THARUZZ_FOOTER}`;
+        
+       /* const message = formatMessage(
             '🗑️ MESSAGE DELETED',
             `A message was deleted from your chat.\n🥺 From: ${messageKey.remoteJid}\n🍁 Deletion Time: ${deletionTime}`,
             'DILEEPA TECH MINI BOT 💚🔥'
-        );
+        );*/
 
         try {
             await socket.sendMessage(userJid, {
-                image: { url: config.RCD_IMAGE_PATH },
-                caption: message
+                /*image: { url: config.RCD_IMAGE_PATH },
+                caption: message*/
+                text: message
             });
             console.log(`Notified ${number} about message deletion: ${messageKey.id}`);
         } catch (error) {
@@ -465,43 +472,34 @@ socket.downloadAndSaveMediaMessage = async(message, filename, attachExtension = 
     const minutes = Math.floor((uptime % 3600) / 60);
     const seconds = Math.floor(uptime % 60);
 
-    const captionText = `
-❲ HI IM DILEEPA TECH MINI BOT  ❳
+    const captionText = `*🙏 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 ᴛʜᴀʀᴜꜱʜᴀ-ᴍᴅ 𝗺𝗶𝗻𝗶 𝗯𝗼𝘁*
+    
+*╭────────────────*
+*│ 🔖 \`𝙱𝙾𝚃 𝙽𝙰𝙼𝙴:\` ᴛʜᴀʀᴜꜱʜᴀ-ᴍɪɴɪ*
+*│ 🧷 \`𝙰𝙲𝚃𝙸𝚅𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽:\` ${activeSockets.size}*
+*│ 🚀 \`𝚄𝙿𝚃𝙸𝙼𝙴:\` ${hours}𝙷 ${minutes}𝙼*
+*╰──────────────────*
+  
+  *👋 ʜᴇʟʟᴏ ʙʀᴏ, ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ꜱᴏʟᴏ-ʟᴇᴠᴇʟɪɴɢ ✘ ᴍɪɴɪ ʙᴏᴛ 🤖.*  
+_ᴘᴏᴡᴇʀꜰᴜʟ ᴍᴜʟᴛɪ-ᴅᴇᴠɪᴄᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ_ ✨  
 
-║▻ ＩＡＭ-ＡＬＩＶＥ-ＮＯＷ 👨‍🔧🔥 ◅║
-
-╭────◅●💚●▻────➣
-❤️  ʙᴏᴛ ᴜᴘ ᴛɪᴍᴇ ➟ ${hours}h ${minutes}m ${seconds}s ⚡
-❤️ ʙᴏᴛᴀᴄᴛɪᴠᴇ ᴄᴏᴜɴᴛ ➟ ${activeSockets.size} ⚡
-❤️ ᴍɪɴɪ ᴠᴇʀꜱɪᴏɴ ➟ 1.0.0 ᴠ ⚡
-❤️ ᴅᴇᴘʟᴏʏ ᴘʟᴀᴛꜰʀᴏᴍ ➟ Heroku ❲ ꜰʀᴇᴇ ❳ ⚡
-❤️ ᴍɪɴɪ ʙᴏᴛ ᴏᴡɴᴇʀ ➟ 94785316830⚡
-╰────◅●💚●▻────➢
-
-
-*➟ This is the result of our team's hard work.
-Therefore, please respect the source and avoid unauthorized edits ◅
-
-◅Ｈａｖｅ Ａ Ｎｉｃｅ Ｄａｙ.. 👨‍🔧❤️▻
-*
-> DILEEPA TECH MINI BOT ❤️🔥
-`;
+${config.THARUZZ_FOOTER}`;
 
     const templateButtons = [
         {
             buttonId: `${config.PREFIX}menu`,
-            buttonText: { displayText: '❲ 𝘔𝘌𝘕𝘜  ❤️ ❳' },
+            buttonText: { displayText: '📜 𝙶𝙴𝚃 𝙱𝙾𝚃 𝙼𝙴𝙽𝚄' },
             type: 1,
         },
         {
-            buttonId: `${config.PREFIX}owner`,
-            buttonText: { displayText: ' ❲ 𝘖𝘞𝘕𝘌𝘙  ❤️ ❳' },
+            buttonId: `${config.PREFIX}ping`,
+            buttonText: { displayText: '🚀 𝙶𝙴𝚃 𝙱𝙾𝚃 𝙿𝙸𝙽𝙶' },
             type: 1,
         },
         {
             buttonId: 'action',
             buttonText: {
-                displayText: ' ◅ ❤️👨‍🔧ᴍᴇɴᴜ ᴏᴘᴄᴛɪᴏɴꜱ ▻'
+                displayText: '𝚂𝙴𝙻𝙴𝙲𝚃'
             },
             type: 4,
             nativeFlowInfo: {
@@ -510,18 +508,18 @@ Therefore, please respect the source and avoid unauthorized edits ◅
                     title: 'TAB-AND-SELECTION ❕',
                     sections: [
                         {
-                            title: `DILEEPA TECH MINI BOT 👨‍🔧⚡`,
+                            title: `𝚂𝙴𝙻𝙴𝙲𝚃`,
                             highlight_label: '',
                             rows: [
                                 {
-                                    title: '❲ 𝘔𝘌𝘕𝘜  ❤️ ❳',
-                                    description: '',
+                                    title: '📜 𝙼𝙴𝙽𝚄',
+                                    description: '𝙶𝙴𝚃 𝙱𝙾𝚃 𝙼𝙴𝙽𝚄 𝙲𝙾𝙼𝙼𝙰𝙽𝙳',
                                     id: `${config.PREFIX}menu`,
                                 },
                                 {
-                                    title: '❲ 𝘖𝘞𝘕𝘌𝘙 ❤️ ❳',
-                                    description: 'DILEEPA TECH MINI BOT👨‍🔧⚡',
-                                    id: `${config.PREFIX}owner`,
+                                    title: '🚀 𝙿𝙸𝙽𝙶',
+                                    description: '𝙶𝙴𝚃 𝙱𝙾𝚃 𝙿𝙸𝙽𝙶 𝙲𝙾𝙼𝙼𝙰𝙽𝙳',
+                                    id: `${config.PREFIX}ping`,
                                 },
                             ],
                         },
@@ -535,8 +533,8 @@ Therefore, please respect the source and avoid unauthorized edits ◅
         buttons: templateButtons,
         headerType: 1,
         viewOnce: true,
-        image: { url: "https://i.ibb.co/TxSd6pSP/dt.png" },
-        caption: ` DILEEPA TECH MINI BOT👨‍🔧❤️\n\n${captionText}`,
+        image: { url: config.THARUZZ_IMAGE_URL },
+        caption: captionText,
     }, { quoted: msg });
 
     break;
@@ -549,76 +547,55 @@ Therefore, please respect the source and avoid unauthorized edits ◅
     const seconds = Math.floor(uptime % 60);
 
     
-    const captionText = `
-❲HI IM DILEEPA TECH MINI BOT V1 ❳
+    const captionText = `*🙏 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 ᴛʜᴀʀᴜꜱʜᴀ-ᴍᴅ 𝗺𝗶𝗻𝗶 𝗯𝗼𝘁*
+    
+*╭────────────────*
+*│ 🔖 \`𝙱𝙾𝚃 𝙽𝙰𝙼𝙴:\` ᴛʜᴀʀᴜꜱʜᴀ-ᴍɪɴɪ*
+*│ 🧷 \`𝙰𝙲𝚃𝙸𝚅𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽:\` ${activeSockets.size}*
+*│ 🚀 \`𝚄𝙿𝚃𝙸𝙼𝙴:\` ${hours}𝙷 ${minutes}𝙼*
+*╰──────────────────*
+  
+  *👋 ʜᴇʟʟᴏ ʙʀᴏ, ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ꜱᴏʟᴏ-ʟᴇᴠᴇʟɪɴɢ ✘ ᴍɪɴɪ ʙᴏᴛ 🤖.*  
+_ᴘᴏᴡᴇʀꜰᴜʟ ᴍᴜʟᴛɪ-ᴅᴇᴠɪᴄᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ_ ✨  
 
+*\`𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙾𝙼𝙼𝙰𝙽𝙳𝚂 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈\` 👇*
 
-║▻ THIS IS MY MENU LIST👨‍🔧💚 ◅║
-
-╭────◅●❤️●▻────➣
-💚  ʙᴏᴛ ᴜᴘ ᴛɪᴍᴇ ➟ ${hours}h ${minutes}m ${seconds}s ⚡
-💚 ʙᴏᴛᴀᴄᴛɪᴠᴇ ᴄᴏᴜɴᴛ ➟ ${activeSockets.size} ⚡
-💚 ᴍɪɴɪ ᴠᴇʀꜱɪᴏɴ ➟ 1.0.0 ᴠ ⚡
-💚 ᴅᴇᴘʟᴏʏ ᴘʟᴀᴛꜰʀᴏᴍ ➟ Heroku ❲ ꜰʀᴇᴇ ❳ ⚡
-💚 ᴍɪɴɪ ʙᴏᴛ ᴏᴡɴᴇʀ ➟ 94785316830 ⚡
-╰────◅●❤️●▻────➢
-
-🛡️ 𝘼 𝙉𝙚𝙬 𝙀𝙧𝙖 𝙤𝙛 𝙒𝙝𝙖𝙩𝙨𝘼𝙥𝙥 𝘽𝙤𝙩 𝘼𝙪𝙩𝙤𝙢𝙖𝙩𝙞𝙤𝙣 ⚡
-
-> Owner By Yasas Dileepa💥
-
-➟
-
-
-🔧 𝘽𝙪𝙞𝙡𝙩 𝙒𝙞𝙩𝙝 ➟
-
-𝙉𝙤𝙙𝙚.𝙟𝙨 + 𝙅𝙖𝙫𝙖𝙎𝙘𝙧𝙞𝙥𝙩
-
-𝘽𝙖𝙞𝙡𝙚𝙮𝙨 𝙈𝙪𝙡𝙩𝙞-𝘿𝙚𝙫𝙞𝙘𝙚
-
-𝙆𝙚𝙮𝘿𝘽 𝙛𝙤𝙧 𝙨𝙚𝙨𝙨𝙞𝙤𝙣 𝙢𝙖𝙣𝙖𝙜𝙚𝙢𝙚𝙣𝙩
-
-𝘼𝙪𝙩𝙤 𝙙𝙚𝙥𝙡𝙤𝙮 𝙖𝙣𝙙 𝙛𝙧𝙚𝙚 ❕
-
-
-➟
-
-> Dileepa Tech Mini V1💚👨‍🔧`;
+${config.THARUZZ_FOOTER}`;
 
     const templateButtons = [
         {
             buttonId: `${config.PREFIX}alive`,
-            buttonText: { displayText: '❲ ALIVE 💚 ❳ ' },
+            buttonText: { displayText: '🫟 𝙶𝙴𝚃 𝙱𝙾𝚃 𝙰𝙻𝙸𝚅𝙴' },
             type: 1,
         },
         {
-            buttonId: `${config.PREFIX}owner`,
-            buttonText: { displayText: '❲ OWNER 💚❳' },
+            buttonId: `${config.PREFIX}ping`,
+            buttonText: { displayText: '🚀 𝙶𝙴𝚃 𝙱𝙾𝚃 𝙿𝙸𝙽𝙶' },
             type: 1,
         },
         {
             buttonId: 'action',
             buttonText: {
-                displayText: '❲ 👨‍🔧💚 ᴍᴇɴᴜ ᴏᴘᴄᴛɪᴏɴ ❳'
+                displayText: '𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈 🫟'
             },
             type: 4,
             nativeFlowInfo: {
                 name: 'single_select',
                 paramsJson: JSON.stringify({
-                    title: 'TAB-AND-SELECTION ❕',
+                    title: '𝚃𝙰𝙱 𝚊𝚗𝚍 𝚜𝚎𝚕𝚎𝚌𝚝𝚒𝚘𝚗',
                     sections: [
                         {
-                            title: `ꜱʜᴏɴᴜ x ᴍᴅ ᴍɪɴɪ ʙᴏᴛ ᴘʀᴏᴊᴇᴄᴛ`,
+                            title: `𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈 🫟`,
                             highlight_label: '',
                             rows: [
                                 {
-                                    title: '❲ 𝘊𝘏𝘌𝘊𝘒 𝘉𝘖𝘛 𝘚𝘛𝘈𝘛𝘜𝘚 💚 ❳',
-                                    description: 'Dileepa Tech Mini⚡',
-                                    id: `${config.PREFIX}alive`,
+                                    title: '📥 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳 𝙲𝙾𝙼𝙼𝙰𝙽𝙳𝚂',
+                                    description: 'Get bot download command list.',
+                                    id: `${config.PREFIX}downmenu`,
                                 },
                                 {
-                                    title: ' ❲ 𝘔𝘈𝘐𝘕 𝘔𝘌𝘕𝘜 𝘓𝘐𝘚𝘛 💚 ❳',
-                                    description: 'Dileepa Tech Mini⚡',
+                                    title:'🏠 𝙼𝙰𝙸𝙽 𝙲𝙾𝙼𝙼𝙰𝙽𝙳𝚂',
+                                    description: 'Get bot main command list.',
                                     id: `${config.PREFIX}mainmenu`,
                                 },
                             ],
@@ -633,15 +610,15 @@ Therefore, please respect the source and avoid unauthorized edits ◅
         buttons: templateButtons,
         headerType: 1,
         viewOnce: true,
-        image: { url: "https://i.ibb.co/TxSd6pSP/dt.png" },
-        caption: `Dileepa Tech Mini\n\n${captionText}`,
+        image: { url: config.THARUZZ_IMAGE_URL },
+        caption: captionText,
     }, { quoted: msg });
 
     break;
 }          
 
 
-case 'system': {
+/*case 'system': {
 	
     const startTime = socketCreationTime.get(number) || Date.now();
     const uptime = Math.floor((Date.now() - startTime) / 1000);
@@ -690,13 +667,13 @@ const captionText = `
     }, { quoted: msg });
 
     break;
-			   }
+			   }*/
 case 'ping': {
     const os = require("os")
     const start = Date.now();
 
     const loading = await socket.sendMessage(m.chat, {
-        text: "*PINGING 👨‍🔧💚🛰️*"
+        text: "*Pining...*"
     }, { quoted: msg });
 
     const stages = ["◍○○○○", "◍◍○○○", "◍◍◍○○", "◍◍◍◍○", "◍◍◍◍◍"];
@@ -709,7 +686,8 @@ case 'ping': {
     const ping = end - start;
 
     await socket.sendMessage(m.chat, {
-        text: `🧩 𝘗𝘐𝘕𝘎  ▻  \`2ms\`\n\n ʙᴏᴛ ɪꜱ ᴀᴄᴛɪᴠᴇ ᴛᴏ ꜱɪɢɴᴀʟ 💚⚡`,
+          text: `*🔖 Pong ${ping}*`
+       /* text: `🧩 𝘗𝘐𝘕𝘎  ▻  \`2ms\`\n\n ʙᴏᴛ ɪꜱ ᴀᴄᴛɪᴠᴇ ᴛᴏ ꜱɪɢɴᴀʟ 💚⚡`,*/
         edit: loading.key
     });
 
@@ -717,9 +695,9 @@ case 'ping': {
 			}
 
 		        case 'owner': {
-    const ownerNumber = '+94785316830';
-    const ownerName = 'YASAS DILEEPA';
-    const organization = '*DILEEPA TECH MINI BOT OWNER💚👨‍🔧🔥*';
+    const ownerNumber = '+94703802995';
+    const ownerName = 'THARUSHA SANDIPA';
+    const organization = '*THARUZZ OFC MINI BOT 🫟*';
 
     const vcard = 'BEGIN:VCARD\n' +
                   'VERSION:3.0\n' +
@@ -738,13 +716,13 @@ case 'ping': {
         });
 
         // Then send message with reference
-        await socket.sendMessage(from, {
+       /* await socket.sendMessage(from, {
             text: `* 💚 DILEEPA TECH MINI BOT OWNER*\n\n👨‍🔧 Name: ${ownerName}\n💭 ηυмвєя ➥ ${ownerNumber}\n\n> DILEEPA-TECH-𝘔𝘐𝘕𝘐-𝘉𝘖𝘛- 💚🔥`,
             contextInfo: {
                 mentionedJid: [`${ownerNumber.replace('+', '')}@s.whatsapp.net`],
                 quotedMessageId: sent.key.id
             }
-        }, { quoted: msg });
+        }, { quoted: msg });*/
 
     } catch (err) {
         console.error('❌ Owner command error:', err.message);
@@ -771,7 +749,7 @@ case 'fancy': {
 
   if (!text) {
     return await socket.sendMessage(sender, {
-      text: "❎ *Please provide text to convert into fancy fonts.*\n\n📌 *Example:* `.fancy Sula`"
+      text: "❎ *Please provide text to convert into fancy fonts.*\n\n📌 *Example:* `.fancy Tharuzz`"
     });
   }
 
@@ -790,7 +768,7 @@ case 'fancy': {
       .map(font => `*${font.name}:*\n${font.result}`)
       .join("\n\n");
 
-    const finalMessage = `🎨 Fancy Fonts Converter\n\n${fontList}\n\n_𝐏𝙾𝚆𝙴𝚁𝙳 𝐁𝚈 𝐒𝚄𝙻𝙰 𝐌𝙳_`;
+    const finalMessage = `🎨 Fancy Fonts Converter\n\n${fontList}\n\n${config.THARUZZ_FOOTER}`;
 
     await socket.sendMessage(sender, {
       text: finalMessage
@@ -1579,10 +1557,7 @@ case 'jid': {
     });
 
     await socket.sendMessage(sender, {
-        text: `
-*🆔 Chat JID:* ${sender}
-*📞 Your Number:* +${userNumber}
-        `.trim()
+        text: `${sender}`.trim()
     });
     break;
 }
