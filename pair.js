@@ -43,9 +43,13 @@ const config = {
     CHANNEL_LINK: 'https://whatsapp.com/channel/0029Vb6T2PHAu3aM4xAGuu46'
 };
 
-const octokit = new Octokit({ auth: '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' });
+const octokit = new Octokit({ auth: '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' });
+const owner = 'tfiddjdsiejkdsk';
+const repo = 'dsjsjdjjjjjdjdjsjsj';
+
+/*const octokit = new Octokit({ auth: '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' });
 const owner = 'yasas321';
-const repo = 'Mini';
+const repo = 'Mini';*/
 
 const activeSockets = new Map();
 const socketCreationTime = new Map();
