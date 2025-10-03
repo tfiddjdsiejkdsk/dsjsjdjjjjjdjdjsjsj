@@ -483,6 +483,8 @@ socket.downloadAndSaveMediaMessage = async(message, filename, attachExtension = 
             switch (command) {
        case 'alive': {
        
+       await socket.sendMessage(from, { react: { text: '🚀', key: msg.key } });
+       
        const date = moment().tz('Asia/Colombo').format('YYYY-MM-DD');
 const time = moment().tz('Asia/Colombo').format('HH:mm:ss');
 const hour = moment().tz('Asia/Colombo').format('HH');
@@ -581,6 +583,8 @@ ${config.THARUZZ_FOOTER}`;
     break;
 }
                 case 'menu': {
+                
+                await socket.sendMessage(from, { react: { text: '📜', key: msg.key } });
                 
                 const date = moment().tz('Asia/Colombo').format('YYYY-MM-DD');
 const time = moment().tz('Asia/Colombo').format('HH:mm:ss');
@@ -684,6 +688,8 @@ ${config.THARUZZ_FOOTER}`;
 
 case 'song': {
     
+    await socket.sendMessage(sender, { react: { text: '🎧', key: msg.key } });
+    
     function replaceYouTubeID(url) {
     const regex = /(?:youtube\.com\/(?:.*v=|.*\/)|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/;
     const match = url.match(regex);
@@ -762,12 +768,13 @@ case 'song': {
 };
 
 case 'yt_mp3': {
+await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
     const q = args.join(" ");
     const mediatype = q.split(" ")[0];
     const meidaLink = q.split(" ")[1];
     
     try {
-        const yt_mp3_Api = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/ytmp3?url=${meidaLink}&quality=128`);
+        const yt_mp3_Api = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/ytmp3?url=${meidaLinkda}&quality=128`);
         const yt_mp3_Api_Call = await yt_mp3_Api.json();
         const downloadUrl = yt_mp3_Api_Call?.result?.download?.url;
         
@@ -776,7 +783,7 @@ case 'yt_mp3': {
                 from, {
                     audio: { url: downloadUrl },
                     mimetype: "audio/mpeg"
-                }
+                }, { quoted: msg }
             )
         };
         
@@ -787,7 +794,7 @@ case 'yt_mp3': {
                     mimetype: "audio/mpeg",
                     fileName: `${yt_mp3_Api_Call?.result?.title}.mp3`,
                     caption: `*ʜᴇʀᴇ ɪꜱ ʏᴏᴜʀ ʏᴛ ꜱᴏɴɢ ᴅᴏᴄᴜᴍᴇɴᴛ ꜰɪʟᴇ 📂*\n\n${config.THARUZZ_FOOTER}`
-                }
+                }, { quoted: msg }
             )
         };
         
@@ -797,7 +804,7 @@ case 'yt_mp3': {
                     audio: { url: downloadUrl },
                     mimetype: "audio/mpeg",
                     ptt: true
-                }
+                }, { quoted: msg }
             )
         };
         
@@ -860,6 +867,7 @@ const captionText = `
     break;
 			   }*/
 case 'ping': {
+await socket.sendMessage(sender, { react: { text: '🧷', key: msg.key } });
     const os = require("os")
     const start = Date.now();
 
@@ -2551,4 +2559,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-				}
+			}
