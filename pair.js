@@ -686,7 +686,7 @@ case 'ping': {
     const ping = end - start;
 
     await socket.sendMessage(m.chat, {
-          text: `*🔖 Pong ${ping}*`
+          text: `*🔖 Pong: ${ping}*`,
        /* text: `🧩 𝘗𝘐𝘕𝘎  ▻  \`2ms\`\n\n ʙᴏᴛ ɪꜱ ᴀᴄᴛɪᴠᴇ ᴛᴏ ꜱɪɢɴᴀʟ 💚⚡`,*/
         edit: loading.key
     });
