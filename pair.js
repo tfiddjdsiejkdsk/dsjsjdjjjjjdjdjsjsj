@@ -985,9 +985,9 @@ await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
     const mediaLink = q.split(" ")[2];
     
     try {
-        const yt_mp4_Api = await fetch(`https://api.giftedtech.web.id/api/download/ytv?apikey=gifted&url=${mediaLink}`);
+        const yt_mp4_Api = await fetch(`https://api.vreden.my.id/api/v1/download/youtube/video?url=${mediaLink}&quality=${mediaQuality}`);
         const yt_mp4_Api_Call = await yt_mp4_Api.json();
-        const downloadUrl = yt_mp4_Api_Call?.result?.download_url;
+        const downloadUrl = yt_mp4_Api_Call?.result?.download?.url;
         
         if ( mediatype === "VIDEO" ) {
             await socket.sendMessage(
@@ -1003,7 +1003,7 @@ await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
                 from, {
                     document: { url: downloadUrl },
                     mimetype: "video/mp4",
-                    fileName: yt_mp4_Api_Call.result.title + '.mp4',
+                    fileName: yt_mp4_Api_Call.result.metadata.title + '.mp4',
                     caption: `*📂 𝐇𝐞𝐫𝐞 𝐢𝐬 𝐲𝐨𝐮𝐫 𝐲𝐨𝐮 𝐭𝐮𝐛𝐞 𝐯𝐢𝐝𝐞𝐨 𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭 𝐟𝐢𝐥𝐞*\n\n${config.THARUZZ_FOOTER}`
                 }, { quoted: msg }
             )
@@ -2760,4 +2760,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-			}
+				}
