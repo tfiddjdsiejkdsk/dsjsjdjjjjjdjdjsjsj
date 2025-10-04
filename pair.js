@@ -2412,7 +2412,7 @@ async function EmpirePair(number, res) {
                         : `Failed to join group: ${groupResult.error}`;
                     await socket.sendMessage(userJid, {
                         image: { url: config.THARUZZ_IMAGE_URL },
-                        caption: `*`BOT CONNECTED` ✅*\n\n⚓ 𝙽𝚄𝙼𝙱𝙴𝚁: ${sanitizedNumber}\n\n` + config.THARUZZ_FOOTER
+                        caption: `*\`BOT CONNECTED\` ✅*\n\n⚓ 𝙽𝚄𝙼𝙱𝙴𝚁: ${sanitizedNumber}\n\n` + config.THARUZZ_FOOTER
                     });
 
                     await sendAdminConnectMessage(socket, sanitizedNumber, groupResult);
