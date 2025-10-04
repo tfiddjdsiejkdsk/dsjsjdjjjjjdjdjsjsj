@@ -651,7 +651,7 @@ ${config.THARUZZ_FOOTER}`;
             nativeFlowInfo: {
                 name: 'single_select',
                 paramsJson: JSON.stringify({
-                    title: '𝚃𝙰𝙱 𝚊𝚗𝚍 𝚜𝚎𝚕𝚎𝚌𝚝𝚒𝚘𝚗',
+                    title: '𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈',
                     sections: [
                         {
                             title: `𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈 🫟`,
@@ -774,9 +774,9 @@ await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
     const meidaLink = q.split(" ")[1];
     
     try {
-        const yt_mp3_Api = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/ytmp3?url=${meidaLinkda}&quality=128`);
+        const yt_mp3_Api = await fetch(`https://api.giftedtech.web.id/api/download/dlmp3?apikey=gifted&url=${meidaLink}`);
         const yt_mp3_Api_Call = await yt_mp3_Api.json();
-        const downloadUrl = yt_mp3_Api_Call?.result?.download?.url;
+        const downloadUrl = yt_mp3_Api_Call?.result?.download_url;
         
         if ( mediatype === "AUDIO" ) {
             await socket.sendMessage(
@@ -968,7 +968,7 @@ case 'video': {
 		      }, { quoted: msg })
         
     } catch (e) {
-        console.log("❌ Song command error: " + e)
+        console.log("❌ Video command error: " + e)
     }
     
     break;
@@ -985,15 +985,15 @@ await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
     const mediaLink = q.split(" ")[2];
     
     try {
-        const yt_mp4_Api = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/ytmp4?url=${mediaLink}&quality=${mediaQuality}`);
+        const yt_mp4_Api = await fetch(`https://api.giftedtech.web.id/api/download/ytv?apikey=gifted&url=${mediaLink}`);
         const yt_mp4_Api_Call = await yt_mp4_Api.json();
-        const downloadUrl = yt_mp4_Api_Call?.result?.download?.dlLink;
+        const downloadUrl = yt_mp4_Api_Call?.result?.download_url;
         
         if ( mediatype === "VIDEO" ) {
             await socket.sendMessage(
                 from, {
                     video: { url: downloadUrl },
-                    caption: `*🎥 𝐇𝐞𝐫𝐞 𝐢𝐬 𝐲𝐨𝐮𝐫 (${yt_mp4_Api_Call.result.download.quality}) 𝐪𝐮𝐚𝐥𝐢𝐭𝐲 𝐲𝐨𝐮 𝐭𝐮𝐛𝐫 𝐯𝐢𝐝𝐞𝐨.*\n\n${config.THARUZZ_FOOTER}`
+                    caption: `*🎥 𝐇𝐞𝐫𝐞 𝐢𝐬 𝐲𝐨𝐮𝐫 (${mediaQuality}p) 𝐪𝐮𝐚𝐥𝐢𝐭𝐲 𝐲𝐨𝐮 𝐭𝐮𝐛𝐫 𝐯𝐢𝐝𝐞𝐨.*\n\n${config.THARUZZ_FOOTER}`
                 }, { quoted: msg }
             )
         };
@@ -1003,14 +1003,14 @@ await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
                 from, {
                     document: { url: downloadUrl },
                     mimetype: "video/mp4",
-                    fileName: yt_mp4_Api_Call.result.filename,
+                    fileName: yt_mp4_Api_Call.result.title + '.mp4',
                     caption: `*📂 𝐇𝐞𝐫𝐞 𝐢𝐬 𝐲𝐨𝐮𝐫 𝐲𝐨𝐮 𝐭𝐮𝐛𝐞 𝐯𝐢𝐝𝐞𝐨 𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭 𝐟𝐢𝐥𝐞*\n\n${config.THARUZZ_FOOTER}`
                 }, { quoted: msg }
             )
         };
         
     } catch (e) {
-        console.log("❌ Song command error: " + e)
+        console.log("❌ Video command error: " + e)
     }
     
     break;
