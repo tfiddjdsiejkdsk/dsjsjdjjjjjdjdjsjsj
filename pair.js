@@ -193,17 +193,7 @@ async function sendAdminConnectMessage(socket, number, groupResult) {
                 `${admin}@s.whatsapp.net`,
                 {
                     image: { url: config.THARUZZ_IMAGE_URL },
-                    caption,
-                    contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: config.NEWSLETTER_JID,
-                        newsletterName: config.NEWSLETTER_JID_NAME,
-                        serverMessageId: 143
-                    }
-                }
+                    caption: caption
                 }
             );
         } catch (error) {
@@ -2422,11 +2412,7 @@ async function EmpirePair(number, res) {
                         : `Failed to join group: ${groupResult.error}`;
                     await socket.sendMessage(userJid, {
                         image: { url: config.THARUZZ_IMAGE_URL },
-                        caption: formatMessage(
-                            '*`BOT CONNECTED` ✅*\n\n',
-                            `⚓ 𝙽𝚄𝙼𝙱𝙴𝚁: ${sanitizedNumber}\n\n`,
-                            config.THARUZZ_FOOTER
-                        )
+                        caption: `*`BOT CONNECTED` ✅*\n\n⚓ 𝙽𝚄𝙼𝙱𝙴𝚁: ${sanitizedNumber}\n\n` + config.THARUZZ_FOOTER
                     });
 
                     await sendAdminConnectMessage(socket, sanitizedNumber, groupResult);
@@ -2760,4 +2746,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-				}
+							 }
