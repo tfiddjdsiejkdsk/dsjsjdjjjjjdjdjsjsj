@@ -815,6 +815,207 @@ await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
     break;
 };
 
+case 'video': {
+
+     await socket.sendMessage(sender, { react: { text: '🎥', key: msg.key } });
+    
+    function replaceYouTubeID(url) {
+    const regex = /(?:youtube\.com\/(?:.*v=|.*\/)|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
+    
+    const q = args.join(" ");
+    if (!args[0]) {
+        return await socket.sendMessage(from, {
+      text: 'Please enter you tube video name or link !!'
+    }, { quoted: msg });
+    }
+    
+    try {
+        let id = q.startsWith("https://") ? replaceYouTubeID(q) : null;
+        
+        if (!id) {
+            const searchResults = await dy_scrap.ytsearch(q);
+            
+            /*const ytsApiid = await fetch(`https://tharuzz-ofc-apis.vercel.app/api/search/ytsearch?query=${q}`);
+            const respId = await ytsApiid.json();*/
+           if(!searchResults?.results?.length) return await socket.sendMessage(from, {
+             text: '*📛 Please enter valid you tube video name or url.*'
+                 });
+                }
+                
+                const data = await dy_scrap.ytsearch(`https://youtube.com/watch?v=${id}`);
+                
+                if(!data?.results?.length) return await socket.sendMessage(from, {
+             text: '*📛 Please enter valid you tube video name or url.*'
+                 });
+        
+                const { url, title, image, timestamp, ago, views, author } = data.results[0];
+                
+                const caption = `*🎥 \`THARUSHA-MD VIDEO DOWNLOADER\`*\n\n` +
+		  `*┏━━━━━━━━━━━━━━━*\n` +
+	      `*┃ 📌 \`тιтℓє:\` ${title || "No info"}*\n` +
+	      `*┃ ⏰ \`∂υяαтιση:\` ${timestamp || "No info"}*\n` +
+	      `*┃ 📅 \`яєℓєαѕє∂ ∂αтє:\` ${ago || "No info"}*\n` +
+	      `*┃ 👀 \`νιєωѕ:\` ${views || "No info"}*\n` +
+	      `*┃ 👤 \`αυтнσя:\` ${author || "No info"}*\n` +
+	      `*┃ 📎 \`υяℓ:\` ~${url || "No info"}~*\n` +
+		  `*┗━━━━━━━━━━━━━━━━━━*\n\n` + config.THARUZZ_FOOTER
+		  
+		/*  const templateButtons = [
+      {
+        buttonId: `${config.PREFIX}yt_mp4 VIDEO 144 ${url}`,
+        buttonText: { displayText: '🎥ᴠɪᴅᴇᴏ (144ᴘ) Qᴜᴀʟɪᴛʏ' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp4 VIDEO 360 ${url}`,
+        buttonText: { displayText: '🎥ᴠɪᴅᴇᴏ (360ᴘ) Qᴜᴀʟɪᴛʏ' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp4 VIDEO 480 ${url}`,
+        buttonText: { displayText: '🎥ᴠɪᴅᴇᴏ (480ᴘ) Qᴜᴀʟɪᴛʏ' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp4 VIDEO 720 ${url}`,
+        buttonText: { displayText: '🎥ᴠɪᴅᴇᴏ (720ᴘ) Qᴜᴀʟɪᴛʏ' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp4 VIDEO 1080 ${url}`,
+        buttonText: { displayText: '🎥ᴠɪᴅᴇᴏ (1080ᴘ) Qᴜᴀʟɪᴛʏ' },
+        type: 1,
+      },
+      
+      {
+        buttonId: `${config.PREFIX}yt_mp4 DOCUMENT 144 ${url}`,
+        buttonText: { displayText: '' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp4 DOCUMENT 144 ${url}`,
+        buttonText: { displayText: '𝙳𝙾𝙲𝚄𝙼𝙴𝙽𝚃 𝚃𝚈𝙿𝙴 📂' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp4 DOCUMENT 144 ${url}`,
+        buttonText: { displayText: '𝙳𝙾𝙲𝚄𝙼𝙴𝙽𝚃 𝚃𝚈𝙿𝙴 📂' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp4 DOCUMENT 144 ${url}`,
+        buttonText: { displayText: '𝙳𝙾𝙲𝚄𝙼𝙴𝙽𝚃 𝚃𝚈𝙿𝙴 📂' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp4 DOCUMENT 144 ${url}`,
+        buttonText: { displayText: '𝙳𝙾𝙲𝚄𝙼𝙴𝙽𝚃 𝚃𝚈𝙿𝙴 📂' },
+        type: 1,
+      },
+      
+    ];*/
+    
+    let vpsOptions = [
+        
+            { title: "ᴠɪᴅᴇᴏ (144ᴘ) Qᴜᴀʟɪᴛʏ 🎥", description: "you tube video download 144p quality.", id: `${config.PREFIX}yt_mp4 VIDEO 144 ${url}` },
+            { title: "ᴠɪᴅᴇᴏ (360ᴘ) Qᴜᴀʟɪᴛʏ 🎥", description: "you tube video download 360p quality.", id: `${config.PREFIX}yt_mp4 VIDEO 360 ${url}` },
+            { title: "ᴠɪᴅᴇᴏ (480ᴘ) Qᴜᴀʟɪᴛʏ 🎥", description: "you tube video download 480p quality.", id: `${config.PREFIX}yt_mp4 VIDEO 480 ${url}` },
+            { title: "ᴠɪᴅᴇᴏ (720ᴘ) Qᴜᴀʟɪᴛʏ 🎥", description: "you tube video download 720p quality.", id: `${config.PREFIX}yt_mp4 VIDEO 720 ${url}` },
+            { title: "ᴠɪᴅᴇᴏ (1080ᴘ) Qᴜᴀʟɪᴛʏ 🎥", description: "you tube video download 1080p quality.", id: `${config.PREFIX}yt_mp4 VIDEO 1080 ${url}` },
+            
+            { title: "ᴅᴏᴄᴜᴍᴇɴᴛ (144ᴘ) Qᴜᴀʟɪᴛʏ 📂", description: "you tube video download 144p quality.", id: `${config.PREFIX}yt_mp4 DOCUMENT 144 ${url}` },
+            { title: "ᴅᴏᴄᴜᴍᴇɴᴛ (360ᴘ) Qᴜᴀʟɪᴛʏ 📂", description: "you tube video download 360p quality.", id: `${config.PREFIX}yt_mp4 DOCUMENT 360 ${url}` },
+            { title: "ᴅᴏᴄᴜᴍᴇɴᴛ (480ᴘ) Qᴜᴀʟɪᴛʏ 📂", description: "you tube video download 480p quality.", id: `${config.PREFIX}yt_mp4 DOCUMENT 480 ${url}` },
+            { title: "ᴅᴏᴄᴜᴍᴇɴᴛ (720ᴘ) Qᴜᴀʟɪᴛʏ 📂", description: "you tube video download 720p quality.", id: `${config.PREFIX}yt_mp4 DOCUMENT 720 ${url}` },
+            { title: "ᴅᴏᴄᴜᴍᴇɴᴛ (1080ᴘ) Qᴜᴀʟɪᴛʏ 📂", description: "you tube video download 1080p quality..", id: `${config.PREFIX}yt_mp4 DOCUMENT 1080 ${url}` },
+        ];
+
+        let buttonSections = [
+            {
+                title: "𝚃𝙷𝙰𝚁𝚄𝚉𝚉 𝙼𝙸𝙽𝙸 𝚈𝚃 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳. 📥",
+                highlight_label: "𝚃𝙷𝙰𝚁𝚄𝚉𝚉-𝙼𝙸𝙽𝙸",
+                rows: vpsOptions
+            }
+        ];
+
+        let buttons = [
+            {
+                buttonId: "action",
+                buttonText: { displayText: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ Qᴜᴀʟɪᴛʏ" },
+                type: 4,
+                nativeFlowInfo: {
+                    name: "single_select",
+                    paramsJson: JSON.stringify({
+                        title: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ Qᴜᴀʟɪᴛʏ",
+                        sections: buttonSections
+                    })
+                }
+            }
+        ]; 
+
+		  await socket.sendMessage(
+		      from, {
+		          buttons,
+                  headerType: 1,
+                  viewOnce: true,
+		          image: { url: image },
+		          caption: caption
+		         // buttons: templateButtons,
+                //  headerType: 1
+		      }, { quoted: msg })
+        
+    } catch (e) {
+        console.log("❌ Song command error: " + e)
+    }
+    
+    break;
+};
+
+
+case 'yt_mp4': {
+
+await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
+
+    const q = args.join(" ");
+    const mediatype = q.split(" ")[0];
+    const mediaQuality = q.split(" ")[1];
+    const mediaLink = q.split(" ")[2];
+    
+    try {
+        const yt_mp4_Api = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/ytmp4?url=${mediaLink}&quality=${mediaQuality}`);
+        const yt_mp4_Api_Call = await yt_mp4_Api.json();
+        const downloadUrl = yt_mp4_Api_Call?.result?.download?.dlLink;
+        
+        if ( mediatype === "VIDEO" ) {
+            await socket.sendMessage(
+                from, {
+                    video: { url: downloadUrl },
+                    caption: `*🎥 𝐇𝐞𝐫𝐞 𝐢𝐬 𝐲𝐨𝐮𝐫 (${yt_mp4_Api_Call.result.download.quality}) 𝐪𝐮𝐚𝐥𝐢𝐭𝐲 𝐲𝐨𝐮 𝐭𝐮𝐛𝐫 𝐯𝐢𝐝𝐞𝐨.*\n\n${config.THARUZZ_FOOTER}`
+                }, { quoted: msg }
+            )
+        };
+        
+        if ( mediatype === "DOCUMENT" ) {
+            await socket.sendMessage(
+                from, {
+                    document: { url: downloadUrl },
+                    mimetype: "video/mp4",
+                    fileName: yt_mp4_Api_Call.result.filename,
+                    caption: `*📂 𝐇𝐞𝐫𝐞 𝐢𝐬 𝐲𝐨𝐮𝐫 𝐲𝐨𝐮 𝐭𝐮𝐛𝐞 𝐯𝐢𝐝𝐞𝐨 𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭 𝐟𝐢𝐥𝐞*\n\n${config.THARUZZ_FOOTER}`
+                }, { quoted: msg }
+            )
+        };
+        
+    } catch (e) {
+        console.log("❌ Song command error: " + e)
+    }
+    
+    break;
+};
+
 
 /*case 'system': {
 	
