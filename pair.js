@@ -709,12 +709,12 @@ case 'xvideo': {
       caption: `*🔞 \`XVIDEO SEARCH RESULTS.\`*\n\n*🔖 Query: ${q}*\n\n${config.THARUZZ_FOOTER}`,
       buttons: [{
         buttonId: 'xnxx_results',
-        buttonText: { displayText: '🔞 Select Video' },
+        buttonText: { displayText: '🔞 SELECT XVIDEO' },
         type: 4,
         nativeFlowInfo: {
           name: 'single_select',
           paramsJson: JSON.stringify({
-            title: '🔍 XNXX Search Results',
+            title: '🔞 SELECT XVIDEO',
             sections: [{ title: 'Search Results', rows }]
           })
         }
@@ -749,10 +749,10 @@ case 'xnxxdl': {
     }
     
     const infoMap = tharuzzXnxxDl.result;
-    const highQlink = infoMap.dl_Links?.highquality;
-    const lowQlink = infoMap.dl_Links?.lowquality;
+    const highQlink = infoMap.result.dl_Links?.highquality;
+    const lowQlink = infoMap.result.dl_Links?.lowquality;
     
-    const caption = `Title: ${infoMap.title || 'Unknown'}\nDuration: ${infoMap.duration || 'Unknown'}\n\n${config.THARUZZ_FOOTER}`;
+    const caption = `📌 \`Title:\` ${infoMap.title || 'Unknown'}\n⏳ \`Duration:\` ${infoMap.duration || 'Unknown'}\n\n${config.THARUZZ_FOOTER}`;
     
     const vpsOptions = [];
     if (lowQlink) {
@@ -812,7 +812,7 @@ case 'xnxxdl': {
 case 'xnxxdlRes': {
   await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
   
-  const q = args.slice(1).join(" ");  // Fixed: Extract URL properly, skipping command
+  const q = args.join(" ");  // Fixed: Extract URL properly, skipping command
   
   if (!q) {
     await socket.sendMessage(from, { text: "No video URL provided." }, { quoted: msg });
