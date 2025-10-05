@@ -760,7 +760,7 @@ case 'tt': {
 case 'ttdltharuzz': {
 	await socket.sendMessage(from, { react: { text: '📥', key: msg.key } });
 	
-  const q = a.join(" ");
+  const q = args.join(" ");
   const mediaType = q.split(" ")[0];
   const mediaLink = q.split(" ")[1];
   try {
