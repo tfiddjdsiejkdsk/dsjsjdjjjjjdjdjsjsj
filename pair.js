@@ -679,7 +679,7 @@ ${config.THARUZZ_FOOTER}`;
 case 'tiktok':
 case 'ttdl':
 case 'tt': {
-  await socket.sendMessage(sender, { react: { text: '🎵', key: msg.key } });
+  await socket.sendMessage(from, { react: { text: '⏳', key: msg.key } });
   
   const q = args.join(" ");
   
@@ -689,7 +689,8 @@ case 'tt': {
   }
   
   try {
-    const response = await dy_scrap.tiktok(q);
+    const ttApi = await fetch(`https://tharuzz-ofc-apis.vercel.app/api/download/ttdl?url=${q}`);
+    const response = await ttApi.json();
     
     if (!response?.status || !response?.result) {
       await socket.sendMessage(from, { text: "No results found. Please enter a valid TikTok video URL !!" }, { quoted: msg });
@@ -755,6 +756,48 @@ case 'tt': {
   }
   break;
 };
+
+case 'ttdltharuzz': {
+	await socket.sendMessage(from, { react: { text: '📥', key: msg.key } });
+	
+  const q = a.join(" ");
+  const mediaType = q.split(" ")[0];
+  const mediaLink = q.split(" ")[1];
+  try {
+    const ttApi = await fetch(`https://tharuzz-ofc-apis.vercel.app/api/download/ttdl?url=${mediaLink}`);
+    const response = await ttApi.json();
+    if (!response.result.hd || !response.result.sd) {
+      await socket.sendMessage(from, { text: "No download link found !!" }, { quoted: msg });
+    }
+    
+    if ( mediaType === "NO_WM" ) {
+      await socket.sendMessage(from, {
+        video: {url: response.result.hd},
+        caption: `*📌 \`Title:\` ${response.result.title}*\n\n${config.THARUZZ_FOOTER}`
+      }, {quoted:msg})
+    };
+    
+    if ( mediaType === "WM" ) {
+      await socket.sendMessage(from, {
+        video: {url: response.result.sd},
+        caption: `*📌 \`Title:\` ${response.result.title}*\n\n${config.THARUZZ_FOOTER}`
+      }, {quoted:msg})
+    }
+    
+    if ( mediaType === "AUDIO" ) {
+      await socket.sendMessage(from, {
+        audio: {url: response.result.music},
+        mimetype: "audio/mpeg"
+      }, {quoted:msg})
+    }
+    
+    
+  } catch (e) {
+    console.log(e);
+    await socket.sendMessage(from, { text: "An error occurred while processing the TikTok video." }, { quoted: msg });
+  }
+  break;
+  };
 
 case 'xnxx':
 case 'xvideo': {
