@@ -674,7 +674,165 @@ ${config.THARUZZ_FOOTER}`;
     }, { quoted: msg });
 
     break;
-}          
+};      
+
+
+
+case 'xnxx':
+case 'xvideo': {
+  await socket.sendMessage(sender, { react: { text: '🫣', key: msg.key } });
+  
+  const q = args.join(" ");
+  
+  if (!q) {
+    await socket.sendMessage(sender, { text: "Please enter xvideo name !!" });
+    break;
+  }
+  
+  try {
+    const xvSearchApi = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/search/xvsearch?query=${q}`);
+    const tharuzzXvsResults = await xvSearchApi.json();
+    
+    if (!tharuzzXvsResults.result || !tharuzzXvsResults.result.xvideos || tharuzzXvsResults.result.xvideos.length === 0) {
+      await socket.sendMessage(from, { text: `No results found for "${q}".` }, { quoted: msg });
+      break;
+    }
+    
+    const rows = tharuzzXvsResults.result.xvideos.map(item => ({
+      title: item.title || "No title info",
+      description: item.link || "No link info",
+      id: `${config.PREFIX}xnxxdl ${item.link || ''}`,
+    }));
+    
+    await socket.sendMessage(from, {
+      image: { url: config.THARUZZ_IMAGE_URL },
+      caption: `*🔞 \`XVIDEO SEARCH RESULTS.\`*\n\n*🔖 Query: ${q}*\n\n${config.THARUZZ_FOOTER}`,
+      buttons: [{
+        buttonId: 'xnxx_results',
+        buttonText: { displayText: '🔞 Select Video' },
+        type: 4,
+        nativeFlowInfo: {
+          name: 'single_select',
+          paramsJson: JSON.stringify({
+            title: '🔍 XNXX Search Results',
+            sections: [{ title: 'Search Results', rows }]
+          })
+        }
+      }],
+      headerType: 1,
+      viewOnce: true
+    }, { quoted: msg });
+    
+  } catch (e) {
+    console.log("❌ Xvideo command error: " + e);
+    await socket.sendMessage(from, { text: "An error occurred while searching." }, { quoted: msg });
+  }
+  break;
+}
+
+case 'xnxxdl': {
+  await socket.sendMessage(sender, { react: { text: '⬇️', key: msg.key } });
+  const link = args.join(" ");
+  
+  if (!link) {
+    await socket.sendMessage(from, { text: "Please provide a valid link." }, { quoted: msg });
+    break;
+  }
+  
+  try {
+    const xnxxDlApi = await fetch(`https://tharuzz-ofc-api-v2.vercel.app/api/download/xvdl?url=${link}`);
+    const tharuzzXnxxDl = await xnxxDlApi.json();
+    
+    if (!tharuzzXnxxDl.result) {
+      await socket.sendMessage(from, { text: "Invalid link or no data found." }, { quoted: msg });
+      break;
+    }
+    
+    const infoMap = tharuzzXnxxDl.result;
+    const highQlink = infoMap.dl_Links?.highquality;
+    const lowQlink = infoMap.dl_Links?.lowquality;
+    
+    const caption = `Title: ${infoMap.title || 'Unknown'}\nDuration: ${infoMap.duration || 'Unknown'}\n\n${config.THARUZZ_FOOTER}`;
+    
+    const vpsOptions = [];
+    if (lowQlink) {
+      vpsOptions.push({
+        title: "ᴠɪᴅᴇᴏ (low) Qᴜᴀʟɪᴛʏ 🎥",
+        description: "xvideo video download low quality.",
+        id: `${config.PREFIX}xnxxdlRes ${lowQlink}`
+      });
+    }
+    if (highQlink) {
+      vpsOptions.push({
+        title: "ᴠɪᴅᴇᴏ (high) Qᴜᴀʟɪᴛʏ 🎥",
+        description: "xvideo video download high quality.",
+        id: `${config.PREFIX}xnxxdlRes ${highQlink}`
+      });
+    }
+    
+    if (vpsOptions.length === 0) {
+      await socket.sendMessage(from, { text: "No download links available." }, { quoted: msg });
+      break;
+    }
+    
+    const buttonSections = [{
+      title: "xvideo download",
+      highlight_label: "𝚃𝙷𝙰𝚁𝚄𝚉𝚉-𝙼𝙸𝙽𝙸",
+      rows: vpsOptions
+    }];
+
+    const buttons = [{
+      buttonId: "action",
+      buttonText: { displayText: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ Qᴜᴀʟɪᴛʏ" },
+      type: 4,
+      nativeFlowInfo: {
+        name: "single_select",
+        paramsJson: JSON.stringify({
+          title: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ Qᴜᴀʟɪᴛʏ",
+          sections: buttonSections
+        })
+      }
+    }]; 
+    
+    await socket.sendMessage(from, {
+      image: { url: infoMap.thumbnail || config.THARUZZ_IMAGE_URL },
+      caption: caption,
+      buttons,
+      headerType: 1,
+      viewOnce: true
+    }, { quoted: msg });
+    
+  } catch (e) {
+    console.log("❌ Error xvideo command: " + e);
+    await socket.sendMessage(from, { text: "An error occurred while processing the download." }, { quoted: msg });
+  }
+  break;
+}
+
+case 'xnxxdlRes': {
+  await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
+  
+  const q = args.slice(1).join(" ");  // Fixed: Extract URL properly, skipping command
+  
+  if (!q) {
+    await socket.sendMessage(from, { text: "No video URL provided." }, { quoted: msg });
+    break;
+  }
+  
+  try {
+    await socket.sendMessage(from, {
+      video: { url: q },
+      caption: "🔞 This is your xvideo.\n\n" + config.THARUZZ_FOOTER
+    }, { quoted: msg });
+  } catch (e) {
+    console.log("❌ Error sending video: " + e);
+    await socket.sendMessage(from, { text: "Failed to send the video. Link may be invalid." }, { quoted: msg });
+  }
+  break;
+};
+
+
+					
 
 case 'song': {
     
