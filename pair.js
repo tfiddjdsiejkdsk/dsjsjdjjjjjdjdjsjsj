@@ -676,7 +676,85 @@ ${config.THARUZZ_FOOTER}`;
     break;
 };      
 
-
+case 'tiktok':
+case 'ttdl':
+case 'tt': {
+  await socket.sendMessage(sender, { react: { text: '🎵', key: msg.key } });
+  
+  const q = args.join(" ");
+  
+  if (!q) {
+    await socket.sendMessage(from, { text: "Please enter TikTok video URL !!" }, { quoted: msg });
+    break;
+  }
+  
+  try {
+    const response = await dy_scrap.tiktok(q);
+    
+    if (!response?.status || !response?.result) {
+      await socket.sendMessage(from, { text: "No results found. Please enter a valid TikTok video URL !!" }, { quoted: msg });
+      break;
+    }
+    
+    const { id, region, title, cover, duration, play, sd, hd, music, play_count, digg_count, comment_count, share_count, download_count, collect_count } = response.result;
+    
+    const ttCap = `*📥 \`THARUSHA-MD MINI TIK TOK DOWNLOADER\`*\n\n` +
+      `*┏━━━━━━━━━━━━━━━*\n` +
+      `*┃ 📌 \`ᴛɪᴛʟᴇ:\`* ${title || "N/A"}\n` +
+      `*┃ ⏰ \`ᴅᴜʀᴀᴛɪᴏɴ:\` ${duration || "N/A"}*\n` +
+      `*┃ 👀 \`ᴠɪᴇᴡꜱ:\` ${play_count || "N/A"}*\n` +
+      `*┃ 🤍 \`ʟɪᴋᴇꜱ:\` ${digg_count || "N/A"}*\n` +
+      `*┃ 📎 \`ᴜʀʟ:\` ~${q}~*\n` +
+      `*┗━━━━━━━━━━━━━━━━━━*\n` +
+      `*\`𝚂𝙴𝙻𝙴𝙲𝚃 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳 𝚃𝚈𝙿𝙴 ⬇️\`*\n\n` + config.THARUZZ_FOOTER;
+    
+    const buttonPanel = [{
+      buttonId: "action",
+      buttonText: { displayText: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ ᴛʏᴘᴇ" },
+      type: 4,
+      nativeFlowInfo: {
+        name: "single_select",
+        paramsJson: JSON.stringify({
+          title: "Select video type",
+          sections: [{
+            title: "TIK TOK DOWNLOADER 📥",
+            highlight_label: "",
+            rows: [
+              {
+                title: "🎟️ ᴡɪᴛʜᴏᴜᴛ ᴡᴀᴛᴇʀᴍᴀʀᴋ",
+                description: "Download video without watermark.",
+                id: `ttdltharuzz NO_WM ${q}`
+              },
+              {
+                title: "🎫 ᴡɪᴛʜ ᴡᴀᴛᴇʀᴍᴀʀᴋ",
+                description: "Download video with watermark.",
+                id: `ttdltharuzz WM ${q}`
+              },
+              {
+                title: "🎶 ᴀᴜᴅɪᴏ ꜰɪʟᴇ",
+                description: "Download video audio.",
+                id: `ttdltharuzz AUDIO ${q}`
+              }
+            ]
+          }]
+        })
+      }
+    }];
+    
+    await socket.sendMessage(from, {
+      image: { url: cover || config.THARUZZ_IMAGE_URL },
+      caption: ttCap,
+      buttons: buttonPanel,
+      headerType: 1,
+      viewOnce: true
+    }, { quoted: msg });
+    
+  } catch (e) {
+    console.log("❌ TikTok command error: " + e);
+    await socket.sendMessage(from, { text: "An error occurred while processing the TikTok video." }, { quoted: msg });
+  }
+  break;
+};
 
 case 'xnxx':
 case 'xvideo': {
