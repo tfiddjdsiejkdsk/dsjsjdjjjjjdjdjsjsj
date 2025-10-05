@@ -749,8 +749,8 @@ case 'xnxxdl': {
     }
     
     const infoMap = tharuzzXnxxDl.result;
-    const highQlink = infoMap.result.dl_Links?.highquality;
-    const lowQlink = infoMap.result.dl_Links?.lowquality;
+    const highQlink = infoMap.dl_Links?.highquality;
+    const lowQlink = infoMap.dl_Links?.lowquality;
     
     const caption = `📌 \`Title:\` ${infoMap.title || 'Unknown'}\n⏳ \`Duration:\` ${infoMap.duration || 'Unknown'}\n\n${config.THARUZZ_FOOTER}`;
     
