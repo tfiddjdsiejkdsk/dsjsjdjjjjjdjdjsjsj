@@ -784,6 +784,8 @@ case 'ttdl': {
 };
 
 case 'ttdltharuzz': {
+  await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
+
   const q = args.join(" ");
   const mediaType = q.split(" ")[0];
   const mediaLink = q.split(" ")[1];
@@ -797,14 +799,14 @@ case 'ttdltharuzz': {
     if ( mediaType === "NO_WM" ) {
       await socket.sendMessage(from, {
         video: {url: response.result.hd},
-        caption: `*📌 \`Title:\` ${response.result.title}*\n\n${config.THARUZZ_FOOTER}`
+        caption: `*📌 \`Title:\`* ${response.result.title}\n\n${config.THARUZZ_FOOTER}`
       }, {quoted:msg})
     };
     
     if ( mediaType === "WM" ) {
       await socket.sendMessage(from, {
         video: {url: response.result.sd},
-        caption: `*📌 \`Title:\` ${response.result.title}*\n\n${config.THARUZZ_FOOTER}`
+        caption: `*📌 \`Title:\`* ${response.result.title}\n\n${config.THARUZZ_FOOTER}`
       }, {quoted:msg})
     }
     
@@ -3073,4 +3075,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-					}
+						}
