@@ -676,6 +676,7 @@ ${config.THARUZZ_FOOTER}`;
     break;
 };      
 
+
 // TIK TOK COMMAND
 case 'tiktok':
 case 'tt':
@@ -706,6 +707,33 @@ case 'ttdl': {
       `*┗━━━━━━━━━━━━━━━━━━*\n` +
       `*\`𝚂𝙴𝙻𝙴𝙲𝚃 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳 𝚃𝚈𝙿𝙴 ⬇️\`*\n\n` + config.THARUZZ_FOOTER;
       
+    /*  const templateButtons = [
+      {
+        buttonId: `${config.PREFIX}`,
+        buttonText: { displayText: '🎟️ ᴡɪᴛʜᴏᴜᴛ ᴡᴀᴛᴇʀᴍᴀʀᴋ' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp3 DOCUMENT ${url}`,
+        buttonText: { displayText: '🎫 ᴡɪᴛʜ ᴡᴀᴛᴇʀᴍᴀʀᴋ' },
+        type: 1,
+      },
+      {
+        buttonId: `${config.PREFIX}yt_mp3 VOICECUT ${url}`,
+        buttonText: { displayText: '🎶 ᴀᴜᴅɪᴏ ꜰɪʟᴇ' },
+        type: 1
+      }
+    ];
+
+		  await socket.sendMessage(
+		      from, {
+		          image: { url: image },
+		          caption: caption,
+		          buttons: templateButtons,
+              headerType: 1
+		      }, { quoted: msg });*/
+		      
+      
       const buttonPanel = [{
       buttonId: "action",
       buttonText: { displayText: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ ᴛʏᴘᴇ" },
@@ -721,17 +749,17 @@ case 'ttdl': {
               {
                 title: "🎟️ ᴡɪᴛʜᴏᴜᴛ ᴡᴀᴛᴇʀᴍᴀʀᴋ",
                 description: "Download video without watermark.",
-                id: `ttdltharuzz NO_WM ${link}`
+                id: `${config.PREFIX}ttdltharuzz NO_WM ${link}`
               },
               {
                 title: "🎫 ᴡɪᴛʜ ᴡᴀᴛᴇʀᴍᴀʀᴋ",
                 description: "Download video with watermark.",
-                id: `ttdltharuzz WM ${link}`
+                id: `${config.PREFIX}ttdltharuzz WM ${link}`
               },
               {
                 title: "🎶 ᴀᴜᴅɪᴏ ꜰɪʟᴇ",
                 description: "Download video audio.",
-                id: `ttdltharuzz AUDIO ${link}`
+                id: `${config.PREFIX}ttdltharuzz AUDIO ${link}`
               }
             ]
           }]
@@ -947,6 +975,7 @@ case 'xnxxdlRes': {
   }
   break;
 };
+
 
 
 /*case 'xnxxdlRes': {
@@ -3044,4 +3073,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-	}
+					}
