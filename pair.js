@@ -14,6 +14,7 @@ const DY_SCRAP = require('@dark-yasiya/scrap');
 const dy_scrap = new DY_SCRAP();
 const fetch = require('node-fetch')
 const { sms, downloadMediaMessage } = require("./msg");
+const { fetchJson } = require("./tharuzz");
 const {
     default: makeWASocket,
     useMultiFileAuthState,
@@ -677,6 +678,7 @@ ${config.THARUZZ_FOOTER}`;
 };      
 
 case 'cmdliststharuzz': {
+  await socket.sendMessage(sender, { react: { text: '🧬', key: msg.key } });
   const category = args.join(" ");
   
   if ( category === "DOWNLOAD" ) {
@@ -739,6 +741,29 @@ ${config.THARUZZ_FOOTER}`
   break;
 };
 
+// FACEBOOK DOWNLOAD
+case 'facebook':
+case 'fbdl':
+case 'fb': {
+  await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
+  
+  const link = args.join(" ");
+  try {
+    if (!link) {
+      await socket.sendMessage(from, {text: "Please emter facebook video url !!"})
+    }
+    
+    const fbApi = await fetchJson(`https://delirius-apiofc.vercel.app/download/facebook?url=${link}`)
+    
+    if (!fbApi?.urls) {
+      await socket.sendMessage(from, {text: "No result found Please enter valid facebook video link :("})
+    }
+    
+    await socket.sendMessage(from, {video: {url: fbApi?.urls?.hd || fbApi?.urls.sd}, caption: `*📥 \`THARUSHA-MD MINI FACEBOOK DOWNLOADER\`*\n\n*📌 \`Title:\`* ${fbApi?.title}\n*🔗 \`Link:\`* ${link}\n\n` + config.THARUZZ_FOOTER}, { quoted: msg }) 
+  }
+  
+  break;
+};
 
 // TIK TOK COMMAND
 case 'tiktok':
@@ -3138,4 +3163,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-				}
+											  }
