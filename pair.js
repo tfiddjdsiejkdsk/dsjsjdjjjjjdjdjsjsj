@@ -635,16 +635,16 @@ ${config.THARUZZ_FOOTER}`;
         {
             buttonId: 'action',
             buttonText: {
-                displayText: '𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈 🫟'
+                displayText: '🔢 𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈 🫟'
             },
             type: 4,
             nativeFlowInfo: {
                 name: 'single_select',
                 paramsJson: JSON.stringify({
-                    title: '𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈',
+                    title: '🔢 𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈',
                     sections: [
                         {
-                            title: `𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈 🫟`,
+                            title: `🔢 𝚂𝙴𝙻𝙴𝙲𝚃 𝙲𝙰𝚃𝙰𝙶𝙾𝚁𝚈 🫟`,
                             highlight_label: '',
                             rows: [
                                 {
@@ -676,28 +676,25 @@ ${config.THARUZZ_FOOTER}`;
     break;
 };      
 
+// TIK TOK COMMAND
 case 'tiktok':
-case 'ttdl':
-case 'tt': {
-  await socket.sendMessage(from, { react: { text: '⏳', key: msg.key } });
-  
-  const q = args.join(" ");
-  
-  if (!q) {
-    await socket.sendMessage(from, { text: "Please enter TikTok video URL !!" }, { quoted: msg });
-    break;
-  }
+case 'tt':
+case 'ttdl': {
+  const link = args.join(" ");
   
   try {
-    const ttApi = await fetch(`https://tharuzz-ofc-apis.vercel.app/api/download/ttdl?url=${q}`);
-    const response = await ttApi.json();
-    
-    if (!response?.status || !response?.result) {
-      await socket.sendMessage(from, { text: "No results found. Please enter a valid TikTok video URL !!" }, { quoted: msg });
-      break;
+    if (!link) {
+      await socket.sendMessage(from, {text: "Please enter valid tik tok video link !!"});
     }
     
-    const { id, region, title, cover, duration, play, sd, hd, music, play_count, digg_count, comment_count, share_count, download_count, collect_count } = response.result;
+    const ttTharuzzApi = await fetch(`https://tharuzz-ofc-apis.vercel.app/api/download/ttdl?url=${link}`);
+    const ttResponseTharuzz = await ttTharuzzApi.json();
+    
+    if (!ttResponseTharuzz?.result) {
+      await socket.sendMessage(from, {text: "No result found :("})
+    }
+    
+    const {title, duration, play_count, digg_count} = ttResponseTharuzz.result;
     
     const ttCap = `*📥 \`THARUSHA-MD MINI TIK TOK DOWNLOADER\`*\n\n` +
       `*┏━━━━━━━━━━━━━━━*\n` +
@@ -705,18 +702,18 @@ case 'tt': {
       `*┃ ⏰ \`ᴅᴜʀᴀᴛɪᴏɴ:\` ${duration || "N/A"}*\n` +
       `*┃ 👀 \`ᴠɪᴇᴡꜱ:\` ${play_count || "N/A"}*\n` +
       `*┃ 🤍 \`ʟɪᴋᴇꜱ:\` ${digg_count || "N/A"}*\n` +
-      `*┃ 📎 \`ᴜʀʟ:\` ~${q}~*\n` +
+      `*┃ 📎 \`ᴜʀʟ:\` ~${link}~*\n` +
       `*┗━━━━━━━━━━━━━━━━━━*\n` +
       `*\`𝚂𝙴𝙻𝙴𝙲𝚃 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳 𝚃𝚈𝙿𝙴 ⬇️\`*\n\n` + config.THARUZZ_FOOTER;
-    
-    const buttonPanel = [{
+      
+      const buttonPanel = [{
       buttonId: "action",
       buttonText: { displayText: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ ᴛʏᴘᴇ" },
       type: 4,
       nativeFlowInfo: {
         name: "single_select",
         paramsJson: JSON.stringify({
-          title: "Select video type",
+          title: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ ᴛʏᴘᴇ",
           sections: [{
             title: "TIK TOK DOWNLOADER 📥",
             highlight_label: "",
@@ -724,17 +721,17 @@ case 'tt': {
               {
                 title: "🎟️ ᴡɪᴛʜᴏᴜᴛ ᴡᴀᴛᴇʀᴍᴀʀᴋ",
                 description: "Download video without watermark.",
-                id: `ttdltharuzz NO_WM ${q}`
+                id: `ttdltharuzz NO_WM ${link}`
               },
               {
                 title: "🎫 ᴡɪᴛʜ ᴡᴀᴛᴇʀᴍᴀʀᴋ",
                 description: "Download video with watermark.",
-                id: `ttdltharuzz WM ${q}`
+                id: `ttdltharuzz WM ${link}`
               },
               {
                 title: "🎶 ᴀᴜᴅɪᴏ ꜰɪʟᴇ",
                 description: "Download video audio.",
-                id: `ttdltharuzz AUDIO ${q}`
+                id: `ttdltharuzz AUDIO ${link}`
               }
             ]
           }]
@@ -743,23 +740,22 @@ case 'tt': {
     }];
     
     await socket.sendMessage(from, {
-      image: { url: cover || config.THARUZZ_IMAGE_URL },
+      image: { url: ttResponseTharuzz.result.cover || config.THARUZZ_IMAGE_URL },
       caption: ttCap,
       buttons: buttonPanel,
       headerType: 1,
       viewOnce: true
     }, { quoted: msg });
+      
     
   } catch (e) {
-    console.log("❌ TikTok command error: " + e);
-    await socket.sendMessage(from, { text: "An error occurred while processing the TikTok video." }, { quoted: msg });
+    console.log(e);
+    await socket.sendMessage(from, {text: "❌ Error: " + e});
   }
   break;
 };
 
 case 'ttdltharuzz': {
-	await socket.sendMessage(from, { react: { text: '📥', key: msg.key } });
-	
   const q = args.join(" ");
   const mediaType = q.split(" ")[0];
   const mediaLink = q.split(" ")[1];
@@ -797,8 +793,9 @@ case 'ttdltharuzz': {
     await socket.sendMessage(from, { text: "An error occurred while processing the TikTok video." }, { quoted: msg });
   }
   break;
-  };
+};
 
+// XNXX COMMAND
 case 'xnxx':
 case 'xvideo': {
   await socket.sendMessage(sender, { react: { text: '🫣', key: msg.key } });
@@ -849,7 +846,7 @@ case 'xvideo': {
     await socket.sendMessage(from, { text: "An error occurred while searching." }, { quoted: msg });
   }
   break;
-}
+};
 
 case 'xnxxdl': {
   await socket.sendMessage(sender, { react: { text: '⬇️', key: msg.key } });
@@ -935,6 +932,28 @@ case 'xnxxdlRes': {
   
   const q = args.join(" ");  // Fixed: Extract URL properly, skipping command
   
+  try {
+    if (!q) {
+    await socket.sendMessage(from, { text: "No video URL provided." });
+  }
+    
+    await socket.sendMessage(from, {
+      video: { url: q },
+      caption: "🔞 This is your xvideo.\n\n" + config.THARUZZ_FOOTER
+    }, { quoted: msg });
+  } catch (e) {
+    console.log("❌ Error sending video: " + e);
+    await socket.sendMessage(from, { text: "Failed to send the video. Link may be invalid." }, { quoted: msg });
+  }
+  break;
+};
+
+
+/*case 'xnxxdlRes': {
+  await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
+  
+  const q = args.join(" ");  // Fixed: Extract URL properly, skipping command
+  
   if (!q) {
     await socket.sendMessage(from, { text: "No video URL provided." }, { quoted: msg });
     break;
@@ -950,7 +969,7 @@ case 'xnxxdlRes': {
     await socket.sendMessage(from, { text: "Failed to send the video. Link may be invalid." }, { quoted: msg });
   }
   break;
-};
+};*/
 
 
 					
@@ -3025,4 +3044,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-							 }
+	}
