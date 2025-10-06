@@ -650,12 +650,12 @@ ${config.THARUZZ_FOOTER}`;
                                 {
                                     title: '📥 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳 𝙲𝙾𝙼𝙼𝙰𝙽𝙳𝚂',
                                     description: 'Get bot download command list.',
-                                    id: `${config.PREFIX}downmenu`,
+                                    id: `${config.PREFIX}cmdliststharuzz DOWNLOAD`,
                                 },
                                 {
                                     title:'🏠 𝙼𝙰𝙸𝙽 𝙲𝙾𝙼𝙼𝙰𝙽𝙳𝚂',
                                     description: 'Get bot main command list.',
-                                    id: `${config.PREFIX}mainmenu`,
+                                    id: `${config.PREFIX}cmdliststharuzz MAIN`,
                                 },
                             ],
                         },
@@ -675,6 +675,69 @@ ${config.THARUZZ_FOOTER}`;
 
     break;
 };      
+
+case 'cmdliststharuzz': {
+  const category = args.join(" ");
+  
+  if ( category === "DOWNLOAD" ) {
+    await socket.sendMessage(from,{
+      image: {url: config.THARUZZ_IMAGE_URL },
+      caption: `*\`THARUSHA-MD MINI BOT DOWNLOAD COMMANDS\` 📥*
+
+*╭──────────●►*
+*│🧨 \`𝐂𝐨𝐦𝐦𝐚𝐧𝐝:\` .video*
+*│📄 \`𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧:\` Download you tube video.*
+*╰──────────────●►*
+
+*╭──────────●►*
+*│🧨 \`𝐂𝐨𝐦𝐦𝐚𝐧𝐝:\` .song*
+*│📄 \`𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧:\` Download you tube song.*
+*╰──────────────●►*
+
+*╭──────────●►*
+*│🧨 \`𝐂𝐨𝐦𝐦𝐚𝐧𝐝:\` .fb*
+*│📄 \`𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧:\` Download facebook video.*
+*╰──────────────●►*
+
+*╭──────────●►*
+*│🧨 \`𝐂𝐨𝐦𝐦𝐚𝐧𝐝:\` .tiktok*
+*│📄 \`𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧:\` Download tik tok video.*
+*╰──────────────●►*
+
+${config.THARUZZ_FOOTER}`
+    }, { quoted: msg });
+  }
+  
+  if ( category === "MAIN" ) {
+    await socket.sendMessage(from,{
+      image: {url: config.THARUZZ_IMAGE_URL },
+      caption: `*\`THARUSHA-MD MINI BOT MAIN COMMANDS\` 🏠*
+
+*╭──────────●►*
+*│🧨 \`𝐂𝐨𝐦𝐦𝐚𝐧𝐝:\` .menu*
+*│📄 \`𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧:\` Get bot command list.*
+*╰──────────────●►*
+
+*╭──────────●►*
+*│🧨 \`𝐂𝐨𝐦𝐦𝐚𝐧𝐝:\` .alive*
+*│📄 \`𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧:\` Check bot online.*
+*╰──────────────●►*
+
+*╭──────────●►*
+*│🧨 \`𝐂𝐨𝐦𝐦𝐚𝐧𝐝:\` .ping*
+*│📄 \`𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧:\` Get bot speed.*
+*╰──────────────●►*
+
+*╭──────────●►*
+*│🧨 \`𝐂𝐨𝐦𝐦𝐚𝐧𝐝:\` .system*
+*│📄 \`𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧:\` See bot system.*
+*╰──────────────●►*
+
+${config.THARUZZ_FOOTER}`
+    }, { quoted: msg });
+  }
+  break;
+};
 
 
 // TIK TOK COMMAND
@@ -3075,4 +3138,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-						}
+				}
