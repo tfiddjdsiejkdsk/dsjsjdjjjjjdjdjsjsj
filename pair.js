@@ -681,7 +681,8 @@ case 'cmdliststharuzz': {
   await socket.sendMessage(sender, { react: { text: '🧬', key: msg.key } });
   const category = args.join(" ");
   
-  if ( category === "DOWNLOAD" ) {
+  try {
+    if ( category === "DOWNLOAD" ) {
     await socket.sendMessage(from,{
       image: {url: config.THARUZZ_IMAGE_URL },
       caption: `*\`THARUSHA-MD MINI BOT DOWNLOAD COMMANDS\` 📥*
@@ -737,6 +738,9 @@ ${config.THARUZZ_FOOTER}`
 
 ${config.THARUZZ_FOOTER}`
     }, { quoted: msg });
+  }
+  } catch (e) {
+    console.log(e)
   }
   break;
 };
