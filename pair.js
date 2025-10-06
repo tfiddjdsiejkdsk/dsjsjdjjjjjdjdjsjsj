@@ -760,10 +760,12 @@ case 'fb': {
     }
     
     await socket.sendMessage(from, {video: {url: fbApi?.urls?.hd || fbApi?.urls.sd}, caption: `*📥 \`THARUSHA-MD MINI FACEBOOK DOWNLOADER\`*\n\n*📌 \`Title:\`* ${fbApi?.title}\n*🔗 \`Link:\`* ${link}\n\n` + config.THARUZZ_FOOTER}, { quoted: msg }) 
+  } catch (e) {
+    console.log(e);
+    await socket.sendMessage(from, {text: "❌ Error:" + e});
   }
-  
   break;
-};
+}
 
 // TIK TOK COMMAND
 case 'tiktok':
