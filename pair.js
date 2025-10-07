@@ -12,6 +12,7 @@ const crypto = require('crypto');
 const axios = require('axios');
 const DY_SCRAP = require('@dark-yasiya/scrap');
 const dy_scrap = new DY_SCRAP();
+const getFBInfo = require('@xaviabot/fb-downloader');
 const fetch = require('node-fetch')
 const { sms, downloadMediaMessage } = require("./msg");
 const { fetchJson } = require("./tharuzz");
@@ -29,6 +30,11 @@ const {
     generateWAMessageFromContent,
     S_WHATSAPP_NET
 } = require('baileys');
+
+const tharuzzMsg = {
+  noResfound: '*No results found :(*',
+  eRorBn: '❌ Error: '
+};
 
 const config = {
     THARUZZ_IMAGE_URL: 'https://github.com/tharusha-md777/THARUZZ-DETABASE/blob/main/media/20250909_101450.jpg?raw=true',
@@ -749,7 +755,7 @@ ${config.THARUZZ_FOOTER}`
 case 'facebook':
 case 'fbdl':
 case 'fb': {
-  await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
+  await socket.sendMessage(sender, { react: { text: '🔍', key: msg.key } });
   
   const link = args.join(" ");
   try {
@@ -757,18 +763,96 @@ case 'fb': {
       await socket.sendMessage(from, {text: "Please emter facebook video url !!"})
     }
     
-    const fbTharuzzapi = await fetch(`https://delirius-apiofc.vercel.app/download/facebook?url=${link}`);
+    const fb = await getFBInfo(link);
     
-    const fbApi = await fbTharuzzapi.json(); 
+  //  const fbApi = await fbTharuzzapi.json(); 
     
-    if (!fbApi?.urls) {
-      await socket.sendMessage(from, {text: "No result found Please enter valid facebook video link :("})
+    if (!fb.hd || fb.sd) {
+      await socket.sendMessage(from, { text: tharuzzMsg.noResfound })
     }
     
-    await socket.sendMessage(from, {video: {url: fbApi?.urls?.hd || fbApi?.urls.sd}, caption: `*📥 \`THARUSHA-MD MINI FACEBOOK DOWNLOADER\`*\n\n*📌 \`Title:\`* ${fbApi?.title}\n*🔗 \`Link:\`* ${link}\n\n` + config.THARUZZ_FOOTER}, { quoted: msg }) 
+    const caption = `*📥 \`THARUSHA-MD MINI FACEBOOK DOWNLOADER\`*\n\n*📌 \`Title:\`* ${fb.title}\n*🔗 \`Link:\`* ${link}\n\n${config.THARUZZ_FOOTER}`;
+    
+    const buttonPanelfb = [{
+      buttonId: "action",
+      buttonText: { displayText: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ ᴛʏᴘᴇ" },
+      type: 4,
+      nativeFlowInfo: {
+        name: "single_select",
+        paramsJson: JSON.stringify({
+          title: "🔢 ꜱᴇʟᴇᴄᴛ ᴠɪᴅᴇᴏ ᴛʏᴘᴇ",
+          sections: [{
+            title: "FACEBOOK DOWNLOADER 📥",
+            highlight_label: "",
+            rows: [
+              {
+                title: "️🔋 ʜᴅ Qᴜᴀʟɪᴛʏ",
+                description: "Download video hd quality.",
+                id: `${config.PREFIX}fbdltharuzz HD ${link}`
+              },
+              {
+                title: "🪫 ꜱᴅ Qᴜᴀʟɪᴛʏ",
+                description: "Download video sd quality..",
+                id: `${config.PREFIX}fbdltharuzz SD ${link}`
+              },
+              {
+                title: "🎶 ᴀᴜᴅɪᴏ ꜰɪʟᴇ",
+                description: "Download video audio.",
+                id: `${config.PREFIX}fbdltharuzz AUDIO ${link}`
+              }
+            ]
+          }]
+        })
+      }
+    }];
+    
+    await socket.sendMessage(from, {
+      image: { url: fb.thumbnail || config.THARUZZ_IMAGE_URL },
+      caption: caption,
+      buttons: buttonPanelfb,
+      headerType: 1,
+      viewOnce: true
+    }, { quoted: msg });
+    
   } catch (e) {
     console.log(e);
-    await socket.sendMessage(from, {text: "❌ Error:" + e});
+    await socket.sendMessage(from, {text: "❌ Error: " + e});
+  }
+  break;
+};
+
+case 'fbdltharuzz': {
+  const q = args.join(" ");
+  const mediaType = q.split(" ")[0];
+  const mediaLink = q.split(" ")[1];
+  try {
+    const res = await getFBInfo(url);
+    
+    if ( mediaType === "HD" ) {
+      await socket.sendMessage(from, {
+        video: {url: res.hd},
+        caption: `*📌 \`Title:\` ${res.title}*\n\n${config.THARUZZ_FOOTER}`
+      }, {quoted:msg})
+    };
+    
+    if ( mediaType === "SD" ) {
+      await socket.sendMessage(from, {
+        video: {url: res.sd},
+        caption: `*📌 \`Title:\` ${res.title}*\n\n${config.THARUZZ_FOOTER}`
+      }, {quoted:msg})
+    }
+    
+    if ( mediaType === "AUDIO" ) {
+      await socket.sendMessage(from, {
+        audio: {url: res.sd},
+        mimetype: "audio/mpeg"
+      }, {quoted:msg})
+    }
+    
+    
+  } catch (e) {
+    console.log(e);
+    await socket.sendMessage(from, { text: "An error occurred while processing the TikTok video." }, { quoted: msg });
   }
   break;
 };
@@ -3171,4 +3255,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-}
+		}
