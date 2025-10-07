@@ -757,7 +757,9 @@ case 'fb': {
       await socket.sendMessage(from, {text: "Please emter facebook video url !!"})
     }
     
-    const fbApi = await fetchJson(`https://delirius-apiofc.vercel.app/download/facebook?url=${link}`)
+    const fbTharuzzapi = await fetch(`https://delirius-apiofc.vercel.app/download/facebook?url=${link}`);
+    
+    const fbApi = await fbTharuzzapi.json(); 
     
     if (!fbApi?.urls) {
       await socket.sendMessage(from, {text: "No result found Please enter valid facebook video link :("})
@@ -769,7 +771,7 @@ case 'fb': {
     await socket.sendMessage(from, {text: "❌ Error:" + e});
   }
   break;
-}
+};
 
 // TIK TOK COMMAND
 case 'tiktok':
@@ -3169,4 +3171,4 @@ async function loadNewsletterJIDsFromRaw() {
         console.error('❌ Failed to load newsletter list from GitHub:', err.message);
         return [];
     }
-											  }
+}
