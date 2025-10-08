@@ -1030,8 +1030,8 @@ case 'ttdltharuzz': {
 };
 
 // INSTAGRAM DOWNLOAD
-case 'instagram'
-case 'insta'
+case 'instagram':
+case 'insta':
 case 'instadl': {
   await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
   const link = args.join(" ");
