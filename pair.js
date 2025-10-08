@@ -15,7 +15,7 @@ const dy_scrap = new DY_SCRAP();
 const getFBInfo = require('@xaviabot/fb-downloader');
 const fetch = require('node-fetch')
 const { sms, downloadMediaMessage } = require("./msg");
-const { fetchJson } = require("./tharuzz");
+const { fetchJson, runtime } = require("./tharuzz");
 const {
     default: makeWASocket,
     useMultiFileAuthState,
