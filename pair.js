@@ -56,6 +56,25 @@ const config = {
     CHANNEL_LINK: 'https://whatsapp.com/channel/0029Vb9LTRHInlqISdCfln45'
 };
 
+// Context එක
+const tharuContext = {
+  key: {
+    fromMe: false,
+    remoteJid: "status@broadcast",
+    participant: "0@s.whatsapp.net",
+  },
+  message: {
+    contactMessage: {
+      displayName: "𝚃𝙷𝙰𝚁𝚄𝚂𝙷𝙰-𝙼𝙸𝙽𝙸",
+      vcard: `BEGIN:VCARD
+VERSION:3.0
+FN:𝚃𝙷𝙰𝚁𝚄𝚂𝙷𝙰-𝙼𝙸𝙽𝙸
+TEL:13135550002
+END:VCARD`
+    }
+  }
+};
+
 const octokit = new Octokit({ auth: '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' });
 const owner = 'tfiddjdsiejkdsk';
 const repo = 'dsjsjdjjjjjdjdjsjsj';
@@ -516,7 +535,7 @@ else pushwish = '`සුබ රාත්‍රියක්` 🌌';
 *│ 🧷 \`𝐀𝐜𝐭𝐢𝐯𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬:\` ${activeSockets.size}*
 *│ 👤 \`𝐁𝐨𝐭 𝐨𝐰𝐧𝐞𝐫:\` Mr.Tharusha Sandipa*
 *│ 📂 \`𝐌𝐞𝐦𝐨𝐫𝐲:\` ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}𝐦𝐛 / ${Math.round(require('os').totalmem / 1024 / 1024)}𝐦𝐛*
-*│ 🕑 \`𝐑𝐮𝐧𝐭𝐢𝐦𝐞:\` ${hours}𝙷 ${minutes}𝙼*
+*│ 🕑 \`𝐑𝐮𝐧𝐭𝐢𝐦𝐞:\` ${runtime(process.uptime())}*
 *╰────────────────●●►*
 * *I'm always availble for you 🫵😇*
 
@@ -575,7 +594,7 @@ ${config.THARUZZ_FOOTER}`;
         viewOnce: true,
         image: { url: config.THARUZZ_IMAGE_URL },
         caption: captionText,
-    }, { quoted: msg });
+    }, { quoted: tharuContext });
 
     break;
 }
@@ -618,7 +637,7 @@ else pushwish = '`සුබ රාත්‍රියක්` 🌌';
 *│ 🧷 \`𝐀𝐜𝐭𝐢𝐯𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬:\` ${activeSockets.size}*
 *│ 👤 \`𝐁𝐨𝐭 𝐨𝐰𝐧𝐞𝐫:\` Mr.Tharusha Sandipa*
 *│ 📂 \`𝐌𝐞𝐦𝐨𝐫𝐲:\` ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}𝐦𝐛 / ${Math.round(require('os').totalmem / 1024 / 1024)}𝐦𝐛*
-*│ 🕑 \`𝐑𝐮𝐧𝐭𝐢𝐦𝐞:\` ${hours}𝙷 ${minutes}𝙼*
+*│ 🕑 \`𝐑𝐮𝐧𝐭𝐢𝐦𝐞:\` ${runtime(process.uptime())}*
 *╰────────────────●●►*
 
   *👋 ʜᴇʟʟᴏ ʙʀᴏ, ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴀʀᴜꜱʜᴀ-ᴍᴅ ᴍɪɴɪ ʙᴏᴛ 🤖.*  
@@ -678,7 +697,7 @@ ${config.THARUZZ_FOOTER}`;
         viewOnce: true,
         image: { url: config.THARUZZ_IMAGE_URL },
         caption: captionText,
-    }, { quoted: msg });
+    }, { quoted: tharuContext });
 
     break;
 };      
