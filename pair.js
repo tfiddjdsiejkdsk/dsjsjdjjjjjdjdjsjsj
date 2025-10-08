@@ -57,23 +57,27 @@ const config = {
 };
 
 // Context එක
+const botName = "𝚃𝙷𝙰𝚁𝚄𝚂𝙷𝙰-𝙼𝙸𝙽𝙸";
 const tharuContext = {
-  key: {
-    fromMe: false,
-    remoteJid: "status@broadcast",
-    participant: "0@s.whatsapp.net",
-  },
-  message: {
-    contactMessage: {
-      displayName: "𝚃𝙷𝙰𝚁𝚄𝚂𝙷𝙰-𝙼𝙸𝙽𝙸",
-      vcard: `BEGIN:VCARD
+        key: {
+            remoteJid: "status@broadcast",
+            participant: "0@s.whatsapp.net",
+            fromMe: false,
+            id: "META_AI_FAKE_ID_TS"
+        },
+        message: {
+            contactMessage: {
+                displayName: botName,
+                vcard: `BEGIN:VCARD
 VERSION:3.0
-FN:𝚃𝙷𝙰𝚁𝚄𝚂𝙷𝙰-𝙼𝙸𝙽𝙸
-TEL:13135550002
+N:${botName};;;;
+FN:${botName}
+ORG:Meta Platforms
+TEL;type=CELL;type=VOICE;waid=13135550002:+1 313 555 0002
 END:VCARD`
-    }
-  }
-};
+            }
+        }
+    };
 
 const octokit = new Octokit({ auth: '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' });
 const owner = 'tfiddjdsiejkdsk';
