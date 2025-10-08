@@ -832,14 +832,14 @@ case 'fbdltharuzz': {
     if ( mediaType === "HD" ) {
       await socket.sendMessage(from, {
         video: {url: res.hd},
-        caption: `*📌 \`Title:\` ${res.title}*\n\n${config.THARUZZ_FOOTER}`
+        caption: `*📌 \`Title:\`* ${res.title}\n\n${config.THARUZZ_FOOTER}`
       }, {quoted:msg})
     };
     
     if ( mediaType === "SD" ) {
       await socket.sendMessage(from, {
         video: {url: res.sd},
-        caption: `*📌 \`Title:\` ${res.title}*\n\n${config.THARUZZ_FOOTER}`
+        caption: `*📌 \`Title:\`* ${res.title}\n\n${config.THARUZZ_FOOTER}`
       }, {quoted:msg})
     }
     
