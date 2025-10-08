@@ -1029,6 +1029,44 @@ case 'ttdltharuzz': {
   break;
 };
 
+// INSTAGRAM DOWNLOAD
+case 'instagram'
+case 'insta'
+case 'instadl': {
+  await socket.sendMessage(sender, { react: { text: '📥', key: msg.key } });
+  const link = args.join(" ");
+  
+    try {
+      if (!link || !link.startsWith('https')) {
+    return await socket.sendMessage(from, {
+      text: "Please enter instagram valid video or image link !!"
+    },{ quoted: msg });
+    }
+      
+    const fetchApi = await fetch(`https://delirius-apiofc.vercel.app/download/instagram?url=` + link);
+    const tharuzzInsta = await fetchApi.json();
+    
+    if (!tharuzzInsta.data) {
+    return await socket.sendMessage(from, {
+      text: "No result found :("
+    },{ quoted: msg });
+    }
+    
+    if ( tharuzzInsta.data.type === "video" ) {
+      await socket.sendMessage(from, {video: {url: tharuzzInsta.data.url}, caption: `*Your instagram content download successfull ✅*\n\n${config.THARUZZ_FOOTER}`}, {quoted: msg})
+    }
+    
+    if ( tharuzzInsta.data.type === "image" ) {
+      await socket.sendMessage(from, {image: {url: tharuzzInsta.data.url}, caption: `*Your instagram content download successfull ✅*\n\n${config.THARUZZ_FOOTER}`}, {quoted: msg})
+    }
+      
+    } catch (e) {
+      console.log(e);
+      await socket.sendMessage(from, {text: "❌ Error: " + e})
+    }
+  break;
+};
+
 // XNXX COMMAND
 case 'xnxx':
 case 'xvideo': {
