@@ -767,9 +767,9 @@ case 'fb': {
     
   //  const fbApi = await fbTharuzzapi.json(); 
     
-    if (!fb.hd || fb.sd) {
+   /* if (!fb.hd || fb.sd) {
       await socket.sendMessage(from, { text: tharuzzMsg.noResfound })
-    }
+    }*/
     
     const caption = `*📥 \`THARUSHA-MD MINI FACEBOOK DOWNLOADER\`*\n\n*📌 \`Title:\`* ${fb.title}\n*🔗 \`Link:\`* ${link}\n\n${config.THARUZZ_FOOTER}`;
     
@@ -826,7 +826,7 @@ case 'fbdltharuzz': {
   const mediaType = q.split(" ")[0];
   const mediaLink = q.split(" ")[1];
   try {
-    const res = await getFBInfo(url);
+    const res = await getFBInfo(mediaLink);
     
     if ( mediaType === "HD" ) {
       await socket.sendMessage(from, {
@@ -852,7 +852,7 @@ case 'fbdltharuzz': {
     
   } catch (e) {
     console.log(e);
-    await socket.sendMessage(from, { text: "An error occurred while processing the TikTok video." }, { quoted: msg });
+    await socket.sendMessage(from, { text: "An error occurred while processing the Facebook video." }, { quoted: msg });
   }
   break;
 };
